@@ -61,6 +61,7 @@ def add_subject():
     if request.method == "POST":
 
         years = request.form.getlist("year[]")
+        semesters = request.form.getlist("semester[]")
         sections = request.form.getlist("section[]")
         subjects = request.form.getlist("subject[]")
         teachers = request.form.getlist("teacher[]")
@@ -71,6 +72,7 @@ def add_subject():
 
             row = Subject(
                 year=years[i],
+                semester=semesters[i],
                 section=sections[i],
                 subject_name=subjects[i],
                 teacher=teachers[i],

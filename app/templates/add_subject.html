@@ -9,7 +9,7 @@
 
 <body>
 
-    <div class="header">
+<div class="header">
 
 <div class="logo">
 TIU
@@ -36,21 +36,36 @@ Routine Optimization System
 
 <div class="row">
 <label>Year</label>
+
 <select name="year[]">
 <option value="MCA1">MCA1</option>
 <option value="MCA2">MCA2</option>
-<!-- <option value="BCA1">BCA1</option>
-<option value="BCA2">BCA2</option>
-<option value="BCA3">BCA3</option> -->
 </select>
+
+</div>
+
+<!-- ✅ NEW SEMESTER FIELD -->
+
+<div class="row">
+<label>Semester</label>
+
+<select name="semester[]">
+<option value="Sem1">Sem1</option>
+<option value="Sem2">Sem2</option>
+<option value="Sem3">Sem3</option>
+<option value="Sem4">Sem4</option>
+</select>
+
 </div>
 
 <div class="row">
 <label>Section</label>
+
 <select name="section[]">
 <option value="A">A</option>
 <option value="B">B</option>
 </select>
+
 </div>
 
 <div class="row">
@@ -65,10 +80,12 @@ Routine Optimization System
 
 <div class="row">
 <label>Type</label>
+
 <select name="type[]">
 <option value="theory">Theory</option>
 <option value="lab">Lab</option>
 </select>
+
 </div>
 
 <div class="row">
@@ -89,8 +106,6 @@ Routine Optimization System
 <button type="submit" class="btn-main">
 Save All Subjects
 </button>
-
-
 
 </form>
 
@@ -113,6 +128,7 @@ Save All Subjects
 </div>
 
 <script>
+
 function addRow(){
 
 let block = document.querySelector(".subject-block");
@@ -124,6 +140,7 @@ clone.querySelectorAll("input").forEach(i => i.value = "");
 document.getElementById("subjects").appendChild(clone);
 
 }
+
 </script>
 
 </body>
