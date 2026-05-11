@@ -820,33 +820,6 @@ body {
 
 
 
-@media (max-width: 768px) {
-
-    .layout {
-        flex-direction: column;
-    }
-
-    .sidebar {
-        width: 100%;
-        flex-direction: row;
-        overflow-x: auto;
-    }
-
-    .sidebar a {
-        flex: 1;
-        text-align: center;
-        border-right: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .content {
-        padding: 20px;
-    }
-
-    .routine th, .routine td {
-        font-size: 12px;
-        padding: 6px;
-    }
-}
 
 
 

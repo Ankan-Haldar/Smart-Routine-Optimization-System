@@ -11,35 +11,70 @@
 
 <div class="row">
 <label>Year</label>
-<input type="text" name="year" value="{{subject.year}}">
+
+<input type="text"
+name="year"
+value="{{ subject.year }}">
+
+</div>
+
+<div class="row">
+<label>Semester</label>
+
+<input type="text"
+name="semester"
+value="{{ subject.semester }}">
+
 </div>
 
 <div class="row">
 <label>Section</label>
-<input type="text" name="section" value="{{subject.section}}">
+
+<input type="text"
+name="section"
+value="{{ subject.section }}">
+
 </div>
 
 <div class="row">
 <label>Subject</label>
-<input type="text" name="subject" value="{{subject.subject_name}}">
+
+<input type="text"
+name="subject_name"
+value="{{ subject.subject_name }}">
+
 </div>
 
 <div class="row">
 <label>Teacher</label>
-<input type="text" name="teacher" value="{{subject.teacher}}">
+
+<input type="text"
+name="teacher"
+value="{{ subject.teacher }}">
+
 </div>
 
 <div class="row">
 <label>Type</label>
-<input type="text" name="type" value="{{subject.subject_type}}">
+
+<input type="text"
+name="subject_type"
+value="{{ subject.subject_type }}">
+
 </div>
 
 <div class="row">
 <label>Hours</label>
-<input type="number" name="hours" value="{{subject.hours}}">
+
+<input type="number"
+name="hours"
+value="{{ subject.hours }}">
+
 </div>
 
-<button class="btn-main">Update</button>
+<button type="submit" class="btn-main">
+Update
+</button>
 
 </form>
 

@@ -202,6 +202,40 @@ def subjects():
         subjects=data
     )
 
+# ---------------- EDIT SUBJECT ----------------
+@main.route("/edit_subject/<int:id>", methods=["GET", "POST"])
+def edit_subject(id):
+
+    if session.get("role") != "admin":
+        return redirect("/login")
+
+    subject = Subject.query.get_or_404(id)
+
+    if request.method == "POST":
+
+        subject.year = request.form["year"]
+        subject.semester = request.form["semester"]
+        subject.section = request.form["section"]
+
+        # ✅ FIXED
+        subject.subject_name = request.form["subject_name"]
+
+        subject.teacher = request.form["teacher"]
+
+        # ✅ FIXED
+        subject.subject_type = request.form["subject_type"]
+
+        subject.hours = request.form["hours"]
+
+        db.session.commit()
+
+        return redirect(url_for("main.subjects"))
+
+    return render_template(
+        "edit_subject.html",
+        subject=subject
+    )
+
 
 # ---------------- DELETE SUBJECT ----------------
 @main.route("/delete_subject/<int:id>")
