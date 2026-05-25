@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Teacher
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='add_teacher.css') }}">
+
+<div class="add-teacher-page">
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <span class="page-tag">
+            👨‍🏫 Faculty Management
+        </span>
+
+        <h1>
+            Add Teacher
+        </h1>
+
+        <p>
+            Create and manage faculty members,
+            departments and academic information
+            for intelligent routine generation.
+        </p>
+
+    </div>
+
+    <!-- MAIN CARD -->
+
+    <div class="form-card">
+
+        <!-- MANUAL FORM -->
+
+        <form method="POST">
+
+            <div class="teacher-block">
+
+                <h3>
+                    Teacher Information
+                </h3>
+
+                <!-- NAME -->
+
+                <div class="row">
+
+                    <label>
+                        Teacher Name
+                    </label>
+
+                    <input type="text"
+                           name="teacher_name"
+                           placeholder="Enter teacher name"
+                           required>
+
+                </div>
+
+                <!-- DEPARTMENT -->
+
+                <div class="row">
+
+                    <label>
+                        Department
+                    </label>
+
+                    <input type="text"
+                           name="department"
+                           placeholder="Enter department">
+
+                </div>
+
+                <!-- EMAIL -->
+
+                <div class="row">
+
+                    <label>
+                        Email
+                    </label>
+
+                    <input type="email"
+                           name="email"
+                           placeholder="Enter email address">
+
+                </div>
+
+            </div>
+
+            <!-- BUTTON -->
+
+            <button type="submit"
+                    class="btn-main">
+
+                ➕ Add Teacher
+
+            </button>
+
+        </form>
+
+        <!-- DIVIDER -->
+
+        <hr>
+
+        <!-- EXCEL UPLOAD -->
+
+        <div class="upload-section">
+
+            <h3>
+                📂 Upload Teachers From Excel
+            </h3>
+
+            <form method="POST"
+                  action="/upload_teachers"
+                  enctype="multipart/form-data">
+
+                <div class="row">
+
+                    <input type="file"
+                           name="file"
+                           required>
+
+                </div>
+
+                <button type="submit"
+                        class="btn-main">
+
+                    Upload Teachers
+
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- LINK -->
+
+        <a href="/view_teachers"
+           class="back-link">
+
+            👨‍🏫 View Teachers
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

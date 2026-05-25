@@ -1,33 +1,49 @@
-{% extends "base.html" %}
+    {% extends "base.html" %}
 
-{% block title %}Select Teacher{% endblock %}
+    {% block content %}
 
-{% block content %}
 
-<div class="teacher-container">
+    <link rel="stylesheet"
+      href="{{ url_for('static', filename='teachers.css') }}">
 
-    <div class="teacher-card">
-        <h2>👨‍🏫 Select Teacher</h2>
+    <div class="form-card">
 
-        <form action="/teacher" method="get">
+        <h1>
+            Teacher Routine
+        </h1>
 
-            <select name="name" required>
-                <option value="">-- Select Teacher --</option>
+        <a href="/admin"
+        class="back-btn">
 
-                {% for t in teachers %}
-                <option value="{{ t }}">{{ t }}</option>
-                {% endfor %}
+            ← Back
 
-            </select>
+        </a>
 
-            <button type="submit">View Routine</button>
+        <div class="teacher-container">
 
-        </form>
+            {% for t in teachers %}
 
-        <a href="/" class="back-btn">🏠 Back to Home</a>
+            <a href="/teacher_routine/{{ t.teacher_name }}"
+            class="teacher-card">
+
+                <h3>
+
+                    {{ t.teacher_name }}
+
+                </h3>
+
+                <p>
+
+                    {{ t.department }}
+
+                </p>
+
+            </a>
+
+            {% endfor %}
+
+        </div>
 
     </div>
 
-</div>
-
-{% endblock %}
+    {% endblock %}

@@ -2,60 +2,127 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="{{ url_for('static', filename='subjects_view.css') }}">
+
 <div class="container">
-<div class="card">
 
-<h1 class="page-title">Subjects Added by Admin</h1>
+    <div class="card">
 
-<table class="subjects-table">
+        <h1>All Subjects</h1>
 
-<thead>
-<tr>
-<th>Year</th>
-<th>Section</th>
-<th>Subject</th>
-<th>Teacher</th>
-<th>Type</th>
-<th>Hours</th>
-<th>Action</th>
-</tr>
-</thead>
+        <a href="/add_subject"
+           class="btn-main">
 
-<tbody>
+            + Add Subject
 
-{% if subjects %}
+        </a>
 
-{% for s in subjects %}
-<tr>
-<td>{{ s.id }}</td>
-<td>{{ s.year }}</td>
-<td>{{ s.section }}</td>
-<td>{{ s.subject_name }}</td>
-<td>{{ s.teacher }}</td>
-<td>{{ s.subject_type }}</td>
-<td>{{ s.hours }}</td>
+        <br><br>
+        <div style="margin-bottom:20px;">
 
-<td>
-<a href="/edit_subject/{{ s.id }}" class="btn-secondary">Edit</a>
+<a href="{{ url_for('main.delete_all_subjects') }}"
+   class="btn-danger"
+   onclick="return confirm('Delete all subjects?')">
 
-<a href="/delete_subject/{{ s.id }}" class="btn-danger">Delete</a>
-</td>
-</tr>
-{% endfor %}
+Delete All Subjects
 
-{% else %}
-<tr>
-<td colspan="7">No subjects added yet</td>
-</tr>
-{% endif %}
-
-</tbody>
-
-</table>
-
-<a href="/admin" class="back-link">← Back to Dashboard</a>
+</a>
 
 </div>
+
+        <table class="routine">
+
+            <tr>
+
+                <th>ID</th>
+
+                <th>Year</th>
+
+                <th>Sem</th>
+
+                <th>Section</th>
+
+                <th>Code</th>
+
+                <th>Subject</th>
+
+                <th>Type</th>
+
+                <th>Credit</th>
+
+                <th>Hours</th>
+
+                <th>Actions</th>
+
+            </tr>
+
+            {% for s in subjects %}
+
+            <tr>
+
+                <td>
+                    {{ s.id }}
+                </td>
+
+                <td>
+                    {{ s.year }}
+                </td>
+
+                <td>
+                    {{ s.semester }}
+                </td>
+
+                <td>
+                    {{ s.section }}
+                </td>
+
+                <td>
+                    {{ s.subject_code }}
+                </td>
+
+                <td>
+                    {{ s.subject_name }}
+                </td>
+
+                <td>
+                    {{ s.subject_type }}
+                </td>
+
+                <td>
+                    {{ s.credit }}
+                </td>
+
+                <td>
+                    {{ s.hours }}
+                </td>
+
+                <td>
+
+                    <a href="/edit_subject/{{ s.id }}"
+                       class="btn-secondary">
+
+                        Edit
+
+                    </a>
+
+                    <a href="/delete_subject/{{ s.id }}"
+                       class="btn-danger"
+                       onclick="return confirm('Delete Subject?')">
+
+                        Delete
+
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
 </div>
 
 {% endblock %}

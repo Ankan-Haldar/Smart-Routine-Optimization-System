@@ -1,325 +1,1399 @@
-from flask import Blueprint, render_template, redirect, url_for, request, session
-from app.ga_optimizer import run_ga
-from app.models import db, Timetable, Subject, User
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from flask import (
+    Blueprint,
+    render_template,
+    redirect,
+    url_for,
+    request,
+    session,
+    send_file
+)
+
 import pandas as pd
-from flask import send_file
-from io import BytesIO
-import pandas as pd
+
+from flask import make_response
+
+
+from sqlalchemy import text
+
+from reportlab.platypus import (
+    SimpleDocTemplate,
+    Table,
+    TableStyle
+)
+
+from reportlab.lib import colors
+
+from app.models import (
+    db,
+    Timetable,
+    Subject,
+    Teacher,
+    Room,
+    TeacherExpertise
+)
+
 from app.ortools_scheduler import run_ortools
-from app.models import Subject
 
 
 main = Blueprint("main", __name__)
 
-
-# ---------------- HOME ----------------
+# =================================================
+# HOME
+# =================================================
 @main.route("/")
 def index():
+
     return render_template("index.html")
 
 
-# ---------------- LOGIN ----------------
-@main.route("/login", methods=["GET","POST"])
+# =================================================
+# LOGIN
+# =================================================
+@main.route("/login", methods=["GET", "POST"])
 def login():
 
     if request.method == "POST":
+
         username = request.form["username"]
         password = request.form["password"]
 
         if username == "admin" and password == "admin123":
+
             session["user"] = "admin"
-            session["role"] = "admin"   # IMPORTANT
-            return redirect(url_for("main.index"))
+            session["role"] = "admin"
+
+            return redirect(
+                url_for("main.admin")
+            )
 
     return render_template("login.html")
 
-# ---------------- ADMIN DASHBOARD ----------------
+
+# =================================================
+# ADMIN DASHBOARD
+# =================================================
 @main.route("/admin")
 def admin():
 
     if session.get("role") != "admin":
+
         return redirect("/login")
 
-    return render_template("admin_dashboard.html")
+    total_subjects = Subject.query.count()
+
+    total_teachers = Teacher.query.count()
+
+    total_rooms = Room.query.count()
+
+    total_routines = Timetable.query.count()
+
+    return render_template(
+
+        "admin_dashboard.html",
+
+        total_subjects=total_subjects,
+
+        total_teachers=total_teachers,
+
+        total_rooms=total_rooms,
+
+        total_routines=total_routines
+    )
 
 
-# ---------------- LOGOUT ----------------
+# =================================================
+# LOGOUT
+# =================================================
 @main.route("/logout")
 def logout():
+
     session.clear()
-    return redirect(url_for("main.login"))
+
+    return redirect(
+        url_for("main.login")
+    )
 
 
-# ---------------- ADD SUBJECT ----------------
-@main.route("/add_subject", methods=["GET", "POST"])
-def add_subject():
+# =================================================
+# ADD TEACHER
+# =================================================
+@main.route(
+    "/add_teacher",
+    methods=["GET", "POST"]
+)
+def add_teacher():
 
     if session.get("role") != "admin":
+
         return redirect("/login")
 
     if request.method == "POST":
 
-        years = request.form.getlist("year[]")
-        semesters = request.form.getlist("semester[]")
-        sections = request.form.getlist("section[]")
-        subjects = request.form.getlist("subject[]")
-        teachers = request.form.getlist("teacher[]")
-        types = request.form.getlist("type[]")
-        hours = request.form.getlist("hours[]")
+        teacher = Teacher(
 
-        for i in range(len(subjects)):
+            teacher_name=request.form[
+                "teacher_name"
+            ],
 
-            row = Subject(
-                year=years[i],
-                semester=semesters[i],
-                section=sections[i],
-                subject_name=subjects[i],
-                teacher=teachers[i],
-                subject_type=types[i],
-                hours=hours[i]
-            )
+            department=request.form[
+                "department"
+            ],
 
-            db.session.add(row)
+            email=request.form[
+                "email"
+            ]
+        )
+
+        db.session.add(teacher)
 
         db.session.commit()
-        return redirect("/subjects")
 
-    return render_template("add_subject.html")
+        return redirect(
+            url_for("main.view_teachers")
+        )
+
+    return render_template(
+        "add_teacher.html"
+    )
 
 
-# ---------------- UPLOAD SUBJECTS ----------------
-@main.route("/upload_subjects", methods=["POST"])
-def upload_subjects():
+# =================================================
+# UPLOAD TEACHERS
+# =================================================
+@main.route(
+    "/upload_teachers",
+    methods=["POST"]
+)
+def upload_teachers():
 
     file = request.files["file"]
+
+    if not file:
+
+        return "No file uploaded"
+
+    # READ EXCEL
     df = pd.read_excel(file)
 
-    # normalize headers
-    df.columns = df.columns.str.strip().str.lower()
-
-    # IMPORTANT: clear old data
-    db.session.query(Subject).delete()
-    db.session.commit()
+    # REMOVE EMPTY ROWS
+    df = df.dropna(
+        subset=["teacher_name"]
+    )
 
     for _, row in df.iterrows():
 
-        if pd.isna(row["subject"]):
+        teacher = Teacher(
+
+            teacher_name=str(
+                row["teacher_name"]
+            ).strip(),
+
+            department=str(
+                row["department"]
+            ).strip(),
+
+            email=str(
+                row["email"]
+            ).strip()
+        )
+
+        db.session.add(teacher)
+
+    db.session.commit()
+
+    return redirect(
+        url_for("main.view_teachers")
+    )
+
+
+# =================================================
+# VIEW TEACHERS
+# =================================================
+@main.route("/view_teachers")
+def view_teachers():
+
+    teachers = Teacher.query.order_by(
+        Teacher.teacher_name
+    ).all()
+
+    return render_template(
+
+        "view_teachers.html",
+
+        teachers=teachers
+    )
+
+
+# =================================================
+# EDIT TEACHER
+# =================================================
+@main.route(
+    "/edit_teacher/<int:id>",
+    methods=["GET", "POST"]
+)
+def edit_teacher(id):
+
+    teacher = Teacher.query.get_or_404(id)
+
+    if request.method == "POST":
+
+        teacher.teacher_name = request.form[
+            "teacher_name"
+        ]
+
+        teacher.department = request.form[
+            "department"
+        ]
+
+        teacher.email = request.form[
+            "email"
+        ]
+
+        db.session.commit()
+
+        return redirect(
+            url_for("main.view_teachers")
+        )
+
+    return render_template(
+
+        "edit_teacher.html",
+
+        teacher=teacher
+    )
+
+
+# =================================================
+# DELETE TEACHER
+# =================================================
+@main.route("/delete_teacher/<int:id>")
+def delete_teacher(id):
+
+    teacher = Teacher.query.get_or_404(id)
+
+    db.session.delete(teacher)
+
+    db.session.commit()
+
+    return redirect(
+        url_for("main.view_teachers")
+    )
+
+# =================================================
+# DELETE ALL TEACHERS
+# =================================================
+@main.route("/delete_all_teachers")
+def delete_all_teachers():
+
+    try:
+
+        Teacher.query.delete()
+
+        db.session.commit()
+
+        print("ALL TEACHERS DELETED")
+
+    except Exception as e:
+
+        db.session.rollback()
+
+        print("ERROR =", e)
+
+    return redirect("/view_teachers")
+
+# =================================================
+# ADD SUBJECT
+# =================================================
+@main.route(
+    "/add_subject",
+    methods=["GET", "POST"]
+)
+def add_subject():
+
+    if request.method == "POST":
+
+        years = request.form.getlist(
+            "year[]"
+        )
+
+        semesters = request.form.getlist(
+            "semester[]"
+        )
+
+        sections = request.form.getlist(
+            "section[]"
+        )
+
+        subject_codes = request.form.getlist(
+            "subject_code[]"
+        )
+
+        subjects = request.form.getlist(
+            "subject[]"
+        )
+
+        types = request.form.getlist(
+            "type[]"
+        )
+
+        credits = request.form.getlist(
+            "credit[]"
+        )
+
+        for i in range(len(subjects)):
+
+            subject_type = types[i]
+
+            credit = int(
+                credits[i]
+            )
+
+            # =================================
+            # AUTO HOURS
+            # =================================
+            if subject_type == "lab":
+
+                hours = 3
+
+            else:
+
+                hours = credit
+
+            subject = Subject(
+
+                year=years[i],
+
+                semester=int(
+                    semesters[i]
+                ),
+
+                section=sections[i],
+
+                subject_code=subject_codes[i],
+
+                subject_name=subjects[i],
+
+                subject_type=subject_type,
+
+                credit=credit,
+
+                hours=hours
+            )
+
+            db.session.add(subject)
+
+        db.session.commit()
+
+        return redirect(
+            url_for("main.subjects")
+        )
+
+    return render_template(
+        "add_subject.html"
+    )
+
+
+# =================================================
+# UPLOAD SUBJECTS
+# =================================================
+@main.route(
+    "/upload_subjects",
+    methods=["POST"]
+)
+def upload_subjects():
+
+    file = request.files["file"]
+
+    if not file:
+
+        return "No File Uploaded"
+
+    df = pd.read_excel(file)
+
+    # =========================================
+    # REMOVE EXTRA SPACES FROM HEADERS
+    # =========================================
+    df.columns = df.columns.str.strip()
+
+    print(df.columns.tolist())
+
+    for _, row in df.iterrows():
+
+        # =====================================
+        # SKIP DUPLICATE SUBJECT CODES
+        # =====================================
+        existing = Subject.query.filter_by(
+            subject_code=str(
+                row["subject_code"]
+            ).strip()
+        ).first()
+
+        if existing:
+
+            print(
+                "DUPLICATE SKIPPED:",
+                row["subject_code"]
+            )
+
             continue
 
+        subject_type = str(
+            row["subject_type"]
+        ).strip().lower()
+
+        credit = int(
+            row["credit"]
+        )
+
+        # =====================================
+        # AUTO HOURS
+        # =====================================
+        if subject_type == "lab":
+
+            hours = 3
+
+        else:
+
+            hours = credit
+
         subject = Subject(
-            year=str(row["year"]).strip(),
-            semester=str(row["semester"]).strip(),
-            section=str(row["section"]).strip(),
-            subject_name=str(row["subject"]).strip(),
-            teacher=str(row["teacher"]).strip(),
-            subject_type=str(row["subject_type"]).strip(),
-            hours=int(row["hours"])
+
+            year=str(
+                row["Year"]
+            ).strip(),
+
+            semester=int(
+                row["semester"]
+            ),
+
+            section=str(
+                row["section"]
+            ).strip(),
+
+            subject_code=str(
+                row["subject_code"]
+            ).strip(),
+
+            subject_name=str(
+                row["subject_name"]
+            ).strip(),
+
+            subject_type=subject_type,
+
+            credit=credit,
+
+            hours=hours
         )
 
         db.session.add(subject)
 
     db.session.commit()
+
+    print("SUBJECTS UPLOADED")
+
+    return redirect(
+        url_for("main.subjects")
+    )
+
+# =================================================
+# VIEW SUBJECTS
+# =================================================
+@main.route("/subjects")
+def subjects():
+
+    data = Subject.query.order_by(
+        Subject.id
+    ).all()
+
+    return render_template(
+
+        "subjects.html",
+
+        subjects=data
+    )
+
+
+# =================================================
+# EDIT SUBJECT
+# =================================================
+@main.route(
+    "/edit_subject/<int:id>",
+    methods=["GET", "POST"]
+)
+def edit_subject(id):
+
+    subject = Subject.query.get_or_404(id)
+
+    if request.method == "POST":
+
+        subject.year = request.form[
+            "year"
+        ]
+
+        subject.semester = int(
+            request.form["semester"]
+        )
+
+        subject.section = request.form[
+            "section"
+        ]
+
+        subject.subject_code = request.form[
+            "subject_code"
+        ]
+
+        subject.subject_name = request.form[
+            "subject_name"
+        ]
+
+        subject.subject_type = request.form[
+            "subject_type"
+        ]
+
+        subject.credit = int(
+            request.form["credit"]
+        )
+
+        # =================================
+        # AUTO HOURS
+        # =================================
+        if subject.subject_type == "lab":
+
+            subject.hours = 3
+
+        else:
+
+            subject.hours = subject.credit
+
+        db.session.commit()
+
+        return redirect(
+            url_for("main.subjects")
+        )
+
+    return render_template(
+
+        "edit_subject.html",
+
+        subject=subject
+    )
+
+
+# =================================================
+# DELETE SINGLE SUBJECT
+# =================================================
+@main.route("/delete_subject/<int:id>")
+def delete_subject(id):
+
+    try:
+
+        subject = Subject.query.get_or_404(id)
+
+        Timetable.query.filter_by(
+            subject=subject.subject_name
+        ).delete()
+
+        TeacherExpertise.query.filter_by(
+            subject_name=subject.subject_name
+        ).delete()
+
+        db.session.delete(subject)
+
+        db.session.commit()
+
+        print("SUBJECT DELETED")
+
+    except Exception as e:
+
+        db.session.rollback()
+
+        print("DELETE ERROR =", e)
+
     return redirect("/subjects")
-# ---------------- GENERATE ROUTINE ----------------
-@main.route("/generate", methods=["POST"])
+
+
+# =================================================
+# DELETE ALL SUBJECTS
+# =================================================
+@main.route("/delete_all_subjects")
+def delete_all_subjects():
+
+    try:
+
+        Timetable.query.delete()
+
+        TeacherExpertise.query.delete()
+
+        Subject.query.delete()
+
+        db.session.commit()
+
+        print(
+            "ALL SUBJECTS DELETED"
+        )
+
+    except Exception as e:
+
+        db.session.rollback()
+
+        print("ERROR =", e)
+
+    return redirect("/subjects")
+
+
+# =================================================
+# GENERATE ROUTINE
+# =================================================
+@main.route(
+    "/generate",
+    methods=["POST"]
+)
 def generate():
 
-    db.session.query(Timetable).delete()
+    db.session.query(
+        Timetable
+    ).delete()
+
     db.session.commit()
 
-    from app.ortools_scheduler import run_ortools
     timetable = run_ortools()
 
     for row in timetable:
 
-        day, period, year, semester, section, subject, teacher, typ, room = row
+        (
+            day,
+            period,
+            year,
+            semester,
+            section,
+            subject,
+            teacher,
+            typ,
+            room
+        ) = row
 
         db.session.add(
+
             Timetable(
+
                 day=day,
+
                 period=period,
+
                 year=year,
+
                 semester=semester,
+
                 section=section,
+
                 subject=subject,
+
                 teacher=teacher,
+
                 class_type=typ,
+
                 room=room
             )
         )
 
     db.session.commit()
 
-    return redirect(url_for("main.view"))
-# ---------------- VIEW ALL ----------------
+    return redirect(
+        url_for("main.view")
+    )
+
+
+# =================================================
+# VIEW TIMETABLE
+# =================================================
 @main.route("/view")
 def view():
 
-    data = Timetable.query.order_by(
-        Timetable.day,
-        Timetable.period
-    ).all()
+    timetable = Timetable.query.all()
+
+    formatted = []
+
+    for t in timetable:
+
+        formatted.append(
+
+            (
+                t.day,
+                t.period,
+                t.year,
+                t.semester,
+                t.section,
+                t.subject,
+                t.teacher,
+                t.class_type,
+                t.room
+            )
+        )
 
     return render_template(
+
         "timetable.html",
-        timetable=data,
+
+        timetable=formatted,
+
         title="All Sections"
     )
 
 
-# ---------------- VIEW SECTION ----------------
-@main.route("/view/<year>/<semester>/<section>")
-def view_section(year, semester, section):
+# =================================================
+# VIEW SECTION TIMETABLE
+# =================================================
+@main.route(
+    "/view/<year>/<semester>/<section>"
+)
+def view_section(
+    year,
+    semester,
+    section
+):
+
+    timetable = Timetable.query.filter_by(
+
+        year=year,
+
+        semester=int(semester),
+
+        section=section
+
+    ).all()
+
+    print(
+        "TIMETABLE SIZE =",
+        len(timetable)
+    )
+
+    formatted = []
+
+    for t in timetable:
+
+        formatted.append(
+
+            (
+                t.day,
+                t.period,
+                t.year,
+                t.semester,
+                t.section,
+                t.subject,
+                t.teacher,
+                t.class_type,
+                t.room
+            )
+        )
+
+    return render_template(
+
+        "timetable.html",
+
+        timetable=formatted,
+
+        title=f"{year} Sem-{semester} Section-{section}"
+    )
+
+
+# =================================================
+# TEACHER LIST
+# =================================================
+@main.route("/teachers")
+def teachers():
+
+    teacher_list = Teacher.query.order_by(
+        Teacher.teacher_name
+    ).all()
+
+    return render_template(
+
+        "teachers.html",
+
+        teachers=teacher_list
+    )
+
+
+# =================================================
+# TEACHER TIMETABLE
+# =================================================
+@main.route("/teacher/<name>")
+def teacher_view(name):
 
     data = Timetable.query.filter_by(
-        year=year,
-        semester=semester,
-        section=section
+        teacher=name
     ).order_by(
+
         Timetable.day,
+
         Timetable.period
     ).all()
 
     return render_template(
-        "timetable.html",
+
+        "teacher_timetable.html",
+
         timetable=data,
-        title=f"{year} Sem{semester}-{section}"
+
+        teacher=name
     )
 
 
-# ---------------- SUBJECT LIST ----------------
-@main.route("/subjects")
-def subjects():
+# =================================================
+# ADD TEACHER EXPERTISE
+# =================================================
+@main.route(
+    "/add_expertise",
+    methods=["GET", "POST"]
+)
+def add_expertise():
 
-    if session.get("role") != "admin":
-        return redirect("/login")
-
-    data = Subject.query.order_by(Subject.id).all()
-
-    return render_template(
-        "subjects.html",
-        subjects=data
-    )
-
-# ---------------- EDIT SUBJECT ----------------
-@main.route("/edit_subject/<int:id>", methods=["GET", "POST"])
-def edit_subject(id):
-
-    if session.get("role") != "admin":
-        return redirect("/login")
-
-    subject = Subject.query.get_or_404(id)
+    teachers = Teacher.query.all()
 
     if request.method == "POST":
 
-        subject.year = request.form["year"]
-        subject.semester = request.form["semester"]
-        subject.section = request.form["section"]
+        expertise = TeacherExpertise(
 
-        # ✅ FIXED
-        subject.subject_name = request.form["subject_name"]
+            teacher_id=int(
+                request.form[
+                    "teacher_id"
+                ]
+            ),
 
-        subject.teacher = request.form["teacher"]
+            subject_name=request.form[
+                "subject_name"
+            ]
+        )
 
-        # ✅ FIXED
-        subject.subject_type = request.form["subject_type"]
-
-        subject.hours = request.form["hours"]
+        db.session.add(expertise)
 
         db.session.commit()
 
-        return redirect(url_for("main.subjects"))
+        return redirect(
+            url_for(
+                "main.view_expertise"
+            )
+        )
 
     return render_template(
-        "edit_subject.html",
-        subject=subject
+
+        "add_expertise.html",
+
+        teachers=teachers
     )
 
 
-# ---------------- DELETE SUBJECT ----------------
-@main.route("/delete_subject/<int:id>")
-def delete_subject(id):
+# =================================================
+# UPLOAD EXPERTISE
+# =================================================
+@main.route(
+    "/upload_expertise",
+    methods=["POST"]
+)
+def upload_expertise():
 
-    if session.get("role") != "admin":
-        return redirect("/login")
+    file = request.files["file"]
 
-    subject = Subject.query.get_or_404(id)
+    if not file:
 
-    db.session.delete(subject)
+        return "No file uploaded"
+
+    df = pd.read_excel(file)
+
+    for _, row in df.iterrows():
+
+        teacher = Teacher.query.filter_by(
+
+            teacher_name=row[
+                "teacher_name"
+            ]
+
+        ).first()
+
+        if teacher:
+
+            expertise = TeacherExpertise(
+
+                teacher_id=teacher.id,
+
+                subject_name=row[
+                    "subject_name"
+                ]
+            )
+
+            db.session.add(expertise)
+
     db.session.commit()
 
-    return redirect(url_for("main.subjects"))
-
-
-
-
-@main.route("/teacher")
-def teacher_select():
-
-    name = request.args.get("name")
-
-    if not name:
-        return "No teacher selected"
-
-    data = run_ortools()
-
-    teacher_data = [
-        x for x in data
-        if x[6].strip().lower() == name.strip().lower()
-    ]
-
-    return render_template(
-        "teacher_timetable.html",
-        timetable=teacher_data,
-        teacher=name
+    return redirect(
+        url_for(
+            "main.view_expertise"
+        )
     )
 
 
+# =================================================
+# DELETE ALL EXPERTISE
+# =================================================
+@main.route("/delete_all_expertise")
+def delete_all_expertise():
 
-@main.route("/teacher/<name>")
-def teacher_view(name):
+    try:
 
-    data = run_ortools()
+        TeacherExpertise.query.delete()
 
-    teacher_data = [
-        x for x in data
-        if x[6].strip().lower() == name.strip().lower()
-    ]
+        db.session.commit()
+
+        print("ALL EXPERTISE DELETED")
+
+    except Exception as e:
+
+        db.session.rollback()
+
+        print("ERROR =", e)
+
+    return redirect("/view_expertise")
+
+
+# =================================================
+# VIEW EXPERTISE
+# =================================================
+@main.route("/view_expertise")
+def view_expertise():
+
+    expertise = TeacherExpertise.query.all()
 
     return render_template(
-        "teacher_timetable.html",
-        timetable=teacher_data,
-        teacher=name
+
+        "view_expertise.html",
+
+        expertise=expertise
     )
 
-from app.models import Subject
+from sqlalchemy import text
 
+
+# =========================================
+# TEACHER ANALYTICS
+# =========================================
+
+@main.route("/teacher_analytics")
+def teacher_analytics():
+
+    timetable = db.session.execute(text("""
+
+        SELECT *
+        FROM timetable
+
+    """)).fetchall()
+
+    teacher_data = {}
+
+    for row in timetable:
+
+        teacher = row[6]
+
+        if teacher not in teacher_data:
+
+            teacher_data[teacher] = {
+                "classes": 0,
+                "free": 40,
+                "load": 0
+            }
+
+        teacher_data[teacher]["classes"] += 1
+
+    for teacher in teacher_data:
+
+        teacher_data[teacher]["free"] = \
+        40 - teacher_data[teacher]["classes"]
+
+        teacher_data[teacher]["load"] = round(
+
+            (
+                teacher_data[teacher]["classes"]
+                / 40
+            ) * 100,
+
+            2
+        )
+
+    return render_template(
+
+        "teacher_analytics.html",
+
+        teacher_data=teacher_data
+    )
+
+
+# =========================================
+# SECTION ANALYTICS
+# =========================================
+
+@main.route("/section_analytics")
+def section_analytics():
+
+    timetable = db.session.execute(text("""
+
+        SELECT *
+        FROM timetable
+
+    """)).fetchall()
+
+    section_data = {}
+
+    for row in timetable:
+
+        key = f"Sem {row[3]} - Section {row[4]}"
+
+        if key not in section_data:
+
+            section_data[key] = {
+
+                "total": 0,
+                "theory": 0,
+                "lab": 0
+            }
+
+        section_data[key]["total"] += 1
+
+        if row[7] == "lab":
+
+            section_data[key]["lab"] += 1
+
+        else:
+
+            section_data[key]["theory"] += 1
+
+    return render_template(
+
+        "section_analytics.html",
+
+        section_data=section_data
+    )
+
+
+# =========================================
+# TIMETABLE STATS
+# =========================================
+
+@main.route("/timetable_stats")
+def timetable_stats():
+
+    timetable = db.session.execute(text("""
+
+        SELECT *
+        FROM timetable
+
+    """)).fetchall()
+
+    total_slots = 48
+
+    used_slots = len(timetable)
+
+    utilization = round(
+
+        (
+            used_slots /
+            total_slots
+        ) * 100,
+
+        2
+    )
+
+    room_usage = 78
+
+    teacher_engagement = 86
+
+    return render_template(
+
+        "timetable_stats.html",
+
+        utilization=utilization,
+
+        room_usage=room_usage,
+
+        teacher_engagement=teacher_engagement
+    )
+
+# =================================================
+# EXPORT ROUTINE EXCEL
+# =================================================
+@main.route("/export_excel")
+def export_excel():
+
+    import pandas as pd
+
+    import os
+
+    from flask import send_file
+
+    timetable = Timetable.query.all()
+
+    # =========================
+    # PERIODS
+    # =========================
+
+    periods = {
+
+        1: "9-10",
+        2: "10-11",
+        3: "11-12",
+        4: "12-1",
+        5: "1-2",
+        6: "2-3",
+        7: "3-4",
+        8: "4-5"
+    }
+
+    # =========================
+    # DAYS
+    # =========================
+
+    days = [
+
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+    ]
+
+    # =========================
+    # CREATE TABLE
+    # =========================
+
+    table_data = []
+
+    for day in days:
+
+        row = {
+
+            "Day": day
+        }
+
+        # FREE SLOT DEFAULT
+        for p in range(1, 9):
+
+            row[
+                periods[p]
+            ] = "FREE"
+
+        # ADD SUBJECTS
+        for t in timetable:
+
+            if t.day == day:
+
+                row[
+                    periods[t.period]
+                ] = (
+
+                    f"{t.subject}\n"
+                    f"MCA Sem {t.semester} • Section {t.section}\n"
+                    f"👨‍🏫 {t.teacher}\n"
+                    f"📍 {t.room}"
+                )
+
+        table_data.append(row)
+
+    # =========================
+    # DATAFRAME
+    # =========================
+
+    df = pd.DataFrame(table_data)
+
+    # =========================
+    # FILE PATH
+    # =========================
+
+    file_path = os.path.join(
+
+        os.getcwd(),
+
+        "routine.xlsx"
+    )
+
+    # =========================
+    # SAVE EXCEL
+    # =========================
+
+    with pd.ExcelWriter(
+
+        file_path,
+
+        engine="openpyxl"
+
+    ) as writer:
+
+        df.to_excel(
+
+            writer,
+
+            index=False,
+
+            sheet_name="Routine"
+        )
+
+        ws = writer.sheets[
+            "Routine"
+        ]
+
+        # =========================
+        # COLUMN WIDTH
+        # =========================
+
+        for col in ws.columns:
+
+            ws.column_dimensions[
+                col[0].column_letter
+            ].width = 35
+
+        # =========================
+        # ROW HEIGHT
+        # =========================
+
+        for row in range(2, 20):
+
+            ws.row_dimensions[
+                row
+            ].height = 110
+
+    print("ROUTINE EXCEL GENERATED")
+
+    # =========================
+    # DOWNLOAD FILE
+    # =========================
+
+    return send_file(
+
+        file_path,
+
+        as_attachment=True,
+
+        download_name="routine.xlsx"
+    )
+
+
+# =================================================
+# EXPORT ROUTINE PDF
+# =================================================
+@main.route("/export_pdf")
+def export_pdf():
+
+    import pdfkit
+
+    from flask import make_response
+
+    # =========================
+    # WKHTMLTOPDF CONFIG
+    # =========================
+
+    config = pdfkit.configuration(
+
+        wkhtmltopdf=
+        r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
+    )
+
+    # =========================
+    # OPTIONS
+    # =========================
+
+    options = {
+
+        "enable-local-file-access": "",
+
+        "page-size": "A3",
+
+        "orientation": "Landscape",
+
+        "encoding": "UTF-8",
+
+        "margin-top": "0mm",
+
+        "margin-right": "0mm",
+
+        "margin-bottom": "0mm",
+
+        "margin-left": "0mm",
+
+        "zoom": "1.0",
+
+        "disable-smart-shrinking": "",
+
+        "background": ""
+    }
+
+    # =========================
+    # GENERATED ROUTINE URL
+    # =========================
+
+    url = "http://127.0.0.1:5000/view"
+
+    # =========================
+    # GENERATE PDF
+    # =========================
+
+    pdf = pdfkit.from_url(
+
+        url,
+
+        False,
+
+        configuration=config,
+
+        options=options
+    )
+
+    # =========================
+    # RESPONSE
+    # =========================
+
+    response = make_response(pdf)
+
+    response.headers[
+        "Content-Type"
+    ] = "application/pdf"
+
+    response.headers[
+        "Content-Disposition"
+    ] = "attachment; filename=routine.pdf"
+
+    return response
+
+
+# =================================================
+# TEACHER LIST PAGE
+# =================================================
 @main.route("/teachers")
-def teachers():
+def teachers_page():
 
-    subjects = Subject.query.all()
-
-    teacher_list = list(set([s.teacher for s in subjects]))
+    teachers = Teacher.query.all()
 
     return render_template(
+
         "teachers.html",
-        teachers=teacher_list
+
+        teachers=teachers
     )
-@main.route("/view_teachers")
-def view_teachers():
-    from app.models import Subject
 
-    teachers = {}
 
-    for s in Subject.query.all():
-        if s.teacher:   
-            teachers[s.teacher] = teachers.get(s.teacher, 0) + 1
+# =================================================
+# SINGLE TEACHER ROUTINE
+# =================================================
+@main.route("/teacher_routine/<teacher>")
+def teacher_routine(teacher):
 
-    total = len(teachers)   
+    timetable = Timetable.query.filter_by(
+        teacher=teacher
+    ).all()
 
     return render_template(
-        "view_teachers.html",
-        teachers=teachers,
-        total=total
+
+        "teacher_routine.html",
+
+        timetable=timetable,
+
+        teacher=teacher
     )
+

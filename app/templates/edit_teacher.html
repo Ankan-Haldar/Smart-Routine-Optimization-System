@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Edit Teacher</title>
+
+    <link rel="stylesheet"
+      href="{{ url_for('static', filename='edit_teacher.css') }}">
+
+</head>
+
+<body>
+
+<div class="form-container">
+
+    <div class="form-card">
+
+        <h1>Edit Teacher</h1>
+
+        <form method="POST">
+
+            <div class="row">
+
+                <label>Teacher Name</label>
+
+                <input type="text"
+                       name="teacher_name"
+                       value="{{ teacher.teacher_name }}"
+                       required>
+
+            </div>
+
+
+            <div class="row">
+
+                <label>Department</label>
+
+                <input type="text"
+                       name="department"
+                       value="{{ teacher.department }}">
+
+            </div>
+
+
+            <div class="row">
+
+                <label>Email</label>
+
+                <input type="email"
+                       name="email"
+                       value="{{ teacher.email }}">
+
+            </div>
+
+
+            <button type="submit"
+                    class="btn-main">
+
+                Update Teacher
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

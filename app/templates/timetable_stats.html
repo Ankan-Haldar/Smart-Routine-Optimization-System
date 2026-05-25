@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+
+{% block title %}
+Timetable Statistics
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static',
+      filename='timetable_stats.css') }}">
+
+<div class="analytics-page">
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+
+    <div class="analytics-header">
+
+        <span class="analytics-tag">
+
+            ⚡ AI Statistics Engine
+
+        </span>
+
+        <h1>
+
+            Timetable Statistics
+
+        </h1>
+
+        <p>
+
+            Real-time timetable performance,
+            room utilization and teacher
+            engagement analysis powered
+            by AI optimization.
+
+        </p>
+
+    </div>
+
+    <!-- =====================================
+         TOP STATS
+    ====================================== -->
+
+    <div class="stats-grid">
+
+        <!-- UTILIZATION -->
+
+        <div class="stats-card">
+
+            <div class="stats-icon">
+
+                📅
+
+            </div>
+
+            <h2>
+
+                Utilization
+
+            </h2>
+
+            <div class="circle"
+
+                 style="--percent:
+                 {{ utilization }}%;">
+
+                {{ utilization }}%
+
+            </div>
+
+            <p>
+
+                Overall timetable efficiency
+
+            </p>
+
+        </div>
+
+        <!-- ROOM USAGE -->
+
+        <div class="stats-card">
+
+            <div class="stats-icon">
+
+                🏫
+
+            </div>
+
+            <h2>
+
+                Room Usage
+
+            </h2>
+
+            <div class="circle"
+
+                 style="--percent:
+                 {{ room_usage }}%;">
+
+                {{ room_usage }}%
+
+            </div>
+
+            <p>
+
+                Classroom occupancy rate
+
+            </p>
+
+        </div>
+
+        <!-- TEACHER ENGAGEMENT -->
+
+        <div class="stats-card">
+
+            <div class="stats-icon">
+
+                👨‍🏫
+
+            </div>
+
+            <h2>
+
+                Teacher Engagement
+
+            </h2>
+
+            <div class="circle"
+
+                 style="--percent:
+                 {{ teacher_engagement }}%;">
+
+                {{ teacher_engagement }}%
+
+            </div>
+
+            <p>
+
+                Faculty participation analytics
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================
+         EXTRA ANALYTICS
+    ====================================== -->
+
+    <div class="extra-grid">
+
+        <!-- PEAK LOAD -->
+
+        <div class="extra-card">
+
+            <div class="extra-icon">
+
+                🔥
+
+            </div>
+
+            <h3>
+
+                Peak Load Analysis
+
+            </h3>
+
+            <p>
+
+                Highest timetable activity
+                detected during morning
+                sessions between 10 AM
+                and 1 PM.
+
+            </p>
+
+        </div>
+
+        <!-- FREE SLOT -->
+
+        <div class="extra-card">
+
+            <div class="extra-icon">
+
+                🟢
+
+            </div>
+
+            <h3>
+
+                Free Slot Analysis
+
+            </h3>
+
+            <p>
+
+                Balanced free periods help
+                reduce scheduling pressure
+                and improve routine quality.
+
+            </p>
+
+        </div>
+
+        <!-- AI SCORE -->
+
+        <div class="extra-card">
+
+            <div class="extra-icon">
+
+                🤖
+
+            </div>
+
+            <h3>
+
+                AI Optimization Score
+
+            </h3>
+
+            <p>
+
+                Current optimization score:
+                <strong>
+
+                    92%
+
+                </strong>
+
+                based on scheduling
+                efficiency and workload
+                balancing.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

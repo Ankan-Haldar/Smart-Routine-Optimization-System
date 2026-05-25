@@ -1,0 +1,219 @@
+/* =========================
+   PAGE
+========================= */
+
+.form-card{
+
+    background:
+    rgba(15,23,42,.78);
+
+    backdrop-filter:
+    blur(18px);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:30px;
+
+    padding:35px;
+
+    margin:30px;
+
+    box-shadow:
+    0 0 35px rgba(34,211,238,.06);
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.form-card h1{
+
+    font-size:42px;
+
+    margin-bottom:20px;
+
+    color:white;
+
+    text-shadow:
+    0 0 15px rgba(255,255,255,.08);
+}
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.back-btn{
+
+    display:inline-block;
+
+    margin-bottom:30px;
+
+    padding:12px 20px;
+
+    border-radius:14px;
+
+    background:
+    rgba(255,255,255,.06);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    color:white;
+
+    text-decoration:none;
+
+    font-weight:600;
+}
+
+/* HOVER */
+
+.back-btn:hover{
+
+    transform:
+    translateY(-3px);
+
+    background:
+    rgba(255,255,255,.1);
+}
+
+/* =========================
+   TEACHER GRID
+========================= */
+
+.teacher-container{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(240px,1fr));
+
+    gap:25px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.teacher-card{
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(139,92,246,.18),
+        rgba(59,130,246,.12)
+    );
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:24px;
+
+    padding:28px;
+
+    text-decoration:none;
+
+    color:white;
+
+    position:relative;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 0 25px rgba(139,92,246,.08);
+
+    transition:.35s;
+}
+
+/* GLOW EFFECT */
+
+.teacher-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:120px;
+
+    height:120px;
+
+    background:
+    rgba(255,255,255,.05);
+
+    border-radius:50%;
+
+    top:-40px;
+
+    right:-40px;
+}
+
+/* HOVER */
+
+.teacher-card:hover{
+
+    transform:
+    translateY(-6px)
+    scale(1.02);
+
+    border:
+    1px solid rgba(139,92,246,.35);
+
+    box-shadow:
+    0 0 30px rgba(139,92,246,.2);
+}
+
+/* =========================
+   TEACHER NAME
+========================= */
+
+.teacher-card h3{
+
+    font-size:26px;
+
+    margin-bottom:12px;
+
+    color:white;
+
+    position:relative;
+
+    z-index:2;
+}
+
+/* =========================
+   DEPARTMENT
+========================= */
+
+.teacher-card p{
+
+    color:#cbd5e1;
+
+    font-size:15px;
+
+    position:relative;
+
+    z-index:2;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+    .form-card{
+
+        margin:15px;
+
+        padding:20px;
+    }
+
+    .form-card h1{
+
+        font-size:32px;
+    }
+
+    .teacher-container{
+
+        grid-template-columns:1fr;
+    }
+}

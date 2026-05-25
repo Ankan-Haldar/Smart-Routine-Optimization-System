@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Expertise
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='add_expertise.css') }}">
+
+<div class="add-expertise-page">
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <span class="page-tag">
+            🧠 AI Faculty Mapping
+        </span>
+
+        <h1>
+            Add Teacher Expertise
+        </h1>
+
+        <p>
+            Assign subject expertise to faculty
+            members for intelligent routine
+            generation and scheduling optimization.
+        </p>
+
+    </div>
+
+    <!-- MAIN CARD -->
+
+    <div class="form-card">
+
+        <!-- MANUAL FORM -->
+
+        <form method="POST">
+
+            <div class="expertise-block">
+
+                <h3>
+                    Expertise Information
+                </h3>
+
+                <!-- TEACHER -->
+
+                <div class="row">
+
+                    <label>
+                        Select Teacher
+                    </label>
+
+                    <select name="teacher_id">
+
+                        {% for t in teachers %}
+
+                        <option value="{{ t.id }}">
+
+                            {{ t.teacher_name }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <!-- SUBJECT -->
+
+                <div class="row">
+
+                    <label>
+                        Subject Name
+                    </label>
+
+                    <input type="text"
+                           name="subject_name"
+                           placeholder="Enter subject expertise"
+                           required>
+
+                </div>
+
+            </div>
+
+            <!-- BUTTON -->
+
+            <button type="submit"
+                    class="btn-main">
+
+                ➕ Add Expertise
+
+            </button>
+
+        </form>
+
+        <!-- DIVIDER -->
+
+        <hr>
+
+        <!-- UPLOAD -->
+
+        <div class="upload-section">
+
+            <h3>
+                📂 Upload Expertise Excel
+            </h3>
+
+            <form method="POST"
+                  action="/upload_expertise"
+                  enctype="multipart/form-data">
+
+                <div class="row">
+
+                    <input type="file"
+                           name="file"
+                           required>
+
+                </div>
+
+                <button type="submit"
+                        class="btn-main">
+
+                    Upload Expertise
+
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- LINK -->
+
+        <a href="/view_expertise"
+           class="back-link">
+
+            📋 View Expertise
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

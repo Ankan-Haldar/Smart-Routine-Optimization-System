@@ -40,7 +40,7 @@ Teacher Routine
 
             </a>
 
-            <a href="/"
+            <a href="/admin"
                class="btn-main">
 
                 🏠 Home
@@ -51,11 +51,18 @@ Teacher Routine
 
     </div>
 
-    <!-- TABLE CARD -->
+    <!-- TABLE -->
 
     <div class="routine-card">
 
-        {% set days = ["Mon","Tue","Wed","Thu","Fri"] %}
+        {% set days = [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+        ] %}
 
         <div class="table-wrapper">
 
@@ -70,6 +77,9 @@ Teacher Routine
                     <th>P3</th>
                     <th>P4</th>
                     <th>P5</th>
+                    <th>P6</th>
+                    <th>P7</th>
+                    <th>P8</th>
 
                 </tr>
 
@@ -83,7 +93,7 @@ Teacher Routine
 
                     </td>
 
-                    {% for p in range(1,6) %}
+                    {% for p in range(1,9) %}
 
                     <td>
 
@@ -91,25 +101,27 @@ Teacher Routine
 
                         {% for row in timetable %}
 
-                        {% if row[0] == d and row[1] == p %}
+                        {% if row.day == d and row.period == p %}
 
                         <div class="subject-box">
 
                             <span class="subject-name">
 
-                                {{ row[5] }}
+                                {{ row.subject_name }}
 
                             </span>
 
                             <span class="subject-meta">
 
-                                {{ row[2] }} - {{ row[4] }}
+                                {{ row.year }}
+                                -
+                                {{ row.section }}
 
                             </span>
 
                             <span class="room">
 
-                                📍 {{ row[8] }}
+                                📍 {{ row.room }}
 
                             </span>
 

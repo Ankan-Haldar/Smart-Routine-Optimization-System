@@ -1,0 +1,497 @@
+/* =========================
+   PAGE
+========================= */
+
+.teacher-page{
+
+    padding:40px;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.teacher-hero{
+
+    margin-bottom:50px;
+}
+
+/* TAG */
+
+.hero-tag{
+
+    display:inline-block;
+
+    padding:10px 18px;
+
+    border-radius:40px;
+
+    background:
+    rgba(255,255,255,.05);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    margin-bottom:20px;
+
+    font-size:14px;
+}
+
+/* TITLE */
+
+.teacher-hero h1{
+
+    font-size:60px;
+
+    margin-bottom:15px;
+
+    color:white;
+
+    text-shadow:
+    0 0 15px rgba(255,255,255,.08);
+}
+
+/* DESCRIPTION */
+
+.teacher-hero p{
+
+    font-size:18px;
+
+    color:#cbd5e1;
+
+    max-width:700px;
+
+    line-height:1.8;
+
+    opacity:.82;
+}
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+.teacher-container{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:50px;
+
+    flex-wrap:wrap;
+}
+
+/* =========================
+   VISUAL
+========================= */
+
+.teacher-visual{
+
+    flex:1;
+
+    min-height:450px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    position:relative;
+}
+
+/* GLOW */
+
+.visual-glow{
+
+    position:absolute;
+
+    width:240px;
+    height:240px;
+
+    border-radius:50%;
+
+    background:
+    radial-gradient(
+        circle,
+        rgba(34,211,238,.75),
+        rgba(139,92,246,.25),
+        transparent
+    );
+
+    filter:blur(70px);
+}
+
+/* =========================
+   CORE
+========================= */
+
+.teacher-core{
+
+    width:220px;
+    height:220px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    position:relative;
+
+    background:
+    radial-gradient(
+        circle at 30% 30%,
+        rgba(255,255,255,.12),
+        rgba(34,211,238,.08),
+        rgba(139,92,246,.06)
+    );
+
+    border:
+    1px solid rgba(255,255,255,.14);
+
+    box-shadow:
+    0 0 40px rgba(34,211,238,.25),
+    0 0 80px rgba(139,92,246,.15);
+
+    backdrop-filter:blur(20px);
+
+    animation:
+    floatCore 6s ease-in-out infinite;
+}
+
+/* FLOAT */
+
+@keyframes floatCore{
+
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-18px);
+    }
+}
+
+/* TEXT */
+
+.teacher-core span{
+
+    font-size:64px;
+
+    font-weight:700;
+
+    color:white;
+
+    letter-spacing:5px;
+
+    text-shadow:
+    0 0 15px #22d3ee,
+    0 0 35px #8b5cf6;
+}
+
+/* =========================
+   ORBITS
+========================= */
+
+.teacher-orbit{
+
+    position:absolute;
+
+    border-radius:50%;
+
+    border:
+    2px solid rgba(34,211,238,.2);
+}
+
+/* ORBIT 1 */
+
+.orbit1{
+
+    width:340px;
+    height:120px;
+
+    animation:
+    spinOrbit1 8s linear infinite;
+}
+
+/* ORBIT 2 */
+
+.orbit2{
+
+    width:420px;
+    height:150px;
+
+    transform:
+    rotate(-18deg);
+
+    animation:
+    spinOrbit2 12s linear infinite reverse;
+}
+
+/* SPIN */
+
+@keyframes spinOrbit1{
+
+    from{
+        transform:rotate(0deg);
+    }
+
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+@keyframes spinOrbit2{
+
+    from{
+        transform:
+        rotate(-18deg)
+        rotateZ(360deg);
+    }
+
+    to{
+        transform:
+        rotate(-18deg)
+        rotateZ(0deg);
+    }
+}
+
+/* =========================
+   CARD
+========================= */
+
+.teacher-card{
+
+    flex:1;
+
+    max-width:480px;
+
+    background:
+    rgba(17,24,39,.72);
+
+    backdrop-filter:blur(20px);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:30px;
+
+    padding:40px;
+
+    box-shadow:
+    0 0 40px rgba(34,211,238,.06);
+}
+
+/* TITLE */
+
+.teacher-card h2{
+
+    font-size:36px;
+
+    margin-bottom:12px;
+
+    color:white;
+}
+
+/* SUBTEXT */
+
+.sub-text{
+
+    color:#cbd5e1;
+
+    opacity:.8;
+
+    margin-bottom:35px;
+
+    line-height:1.7;
+}
+
+/* =========================
+   SELECT BOX
+========================= */
+
+.select-box{
+
+    margin-bottom:25px;
+}
+
+/* SELECT */
+
+.select-box select{
+
+    width:100%;
+
+    padding:18px;
+
+    border-radius:18px;
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    background:
+    rgba(255,255,255,.05);
+
+    color:white;
+
+    font-size:15px;
+
+    outline:none;
+
+    backdrop-filter:blur(10px);
+}
+
+/* OPTION */
+
+.select-box option{
+
+    background:#0f172a;
+
+    color:white;
+}
+
+/* FOCUS */
+
+.select-box select:focus{
+
+    border:
+    1px solid rgba(34,211,238,.4);
+
+    box-shadow:
+    0 0 20px rgba(34,211,238,.12);
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.btn-main{
+
+    width:100%;
+
+    padding:18px;
+
+    border:none;
+
+    border-radius:18px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #8b5cf6,
+        #3b82f6
+    );
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.35s;
+
+    margin-bottom:22px;
+}
+
+/* HOVER */
+
+.btn-main:hover{
+
+    transform:
+    translateY(-4px);
+
+    box-shadow:
+    0 0 30px rgba(139,92,246,.25);
+}
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.back-btn{
+
+    display:block;
+
+    text-align:center;
+
+    text-decoration:none;
+
+    color:#cbd5e1;
+
+    transition:.3s;
+}
+
+.back-btn:hover{
+
+    color:white;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1100px){
+
+    .teacher-container{
+
+        flex-direction:column;
+    }
+
+    .teacher-hero h1{
+
+        font-size:44px;
+    }
+
+    .teacher-card{
+
+        width:100%;
+        max-width:100%;
+    }
+}
+
+@media(max-width:700px){
+
+    .teacher-page{
+
+        padding:20px;
+    }
+
+    .teacher-hero h1{
+
+        font-size:36px;
+    }
+
+    .teacher-core{
+
+        width:170px;
+        height:170px;
+    }
+
+    .teacher-core span{
+
+        font-size:46px;
+    }
+
+    .orbit1{
+
+        width:260px;
+        height:90px;
+    }
+
+    .orbit2{
+
+        width:320px;
+        height:120px;
+    }
+
+    .teacher-card{
+
+        padding:25px;
+    }
+}

@@ -2,14 +2,21 @@
 
 {% block content %}
 
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='edit_subject.css') }}">
+
 <div class="container">
+
 <div class="card">
 
 <h1>Edit Subject</h1>
 
 <form method="POST">
 
+<!-- YEAR -->
 <div class="row">
+
 <label>Year</label>
 
 <input type="text"
@@ -18,16 +25,22 @@ value="{{ subject.year }}">
 
 </div>
 
+
+<!-- SEMESTER -->
 <div class="row">
+
 <label>Semester</label>
 
-<input type="text"
+<input type="number"
 name="semester"
 value="{{ subject.semester }}">
 
 </div>
 
+
+<!-- SECTION -->
 <div class="row">
+
 <label>Section</label>
 
 <input type="text"
@@ -36,8 +49,23 @@ value="{{ subject.section }}">
 
 </div>
 
+
+<!-- SUBJECT CODE -->
 <div class="row">
-<label>Subject</label>
+
+<label>Subject Code</label>
+
+<input type="text"
+name="subject_code"
+value="{{ subject.subject_code }}">
+
+</div>
+
+
+<!-- SUBJECT NAME -->
+<div class="row">
+
+<label>Subject Name</label>
 
 <input type="text"
 name="subject_name"
@@ -45,40 +73,60 @@ value="{{ subject.subject_name }}">
 
 </div>
 
-<div class="row">
-<label>Teacher</label>
 
-<input type="text"
-name="teacher"
-value="{{ subject.teacher }}">
+<!-- SUBJECT TYPE -->
+<div class="row">
+
+<label>Subject Type</label>
+
+<select name="subject_type">
+
+<option value="theory"
+{% if subject.subject_type == "theory" %}
+selected
+{% endif %}
+>
+Theory
+</option>
+
+<option value="lab"
+{% if subject.subject_type == "lab" %}
+selected
+{% endif %}
+>
+Lab
+</option>
+
+</select>
 
 </div>
 
+
+<!-- CREDIT -->
 <div class="row">
-<label>Type</label>
 
-<input type="text"
-name="subject_type"
-value="{{ subject.subject_type }}">
-
-</div>
-
-<div class="row">
-<label>Hours</label>
+<label>Credit</label>
 
 <input type="number"
-name="hours"
-value="{{ subject.hours }}">
+name="credit"
+min="1"
+max="5"
+value="{{ subject.credit }}">
 
 </div>
 
-<button type="submit" class="btn-main">
-Update
+
+<button type="submit"
+class="btn-main">
+
+Update Subject
+
 </button>
 
 </form>
 
 </div>
+
 </div>
 
 {% endblock %}

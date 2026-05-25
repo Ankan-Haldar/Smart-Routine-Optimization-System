@@ -1,0 +1,302 @@
+/* =========================
+   PAGE CONTAINER
+========================= */
+
+.container{
+
+    width:100%;
+
+    padding:30px;
+}
+
+/* =========================
+   MAIN CARD
+========================= */
+
+.card{
+
+    background:
+    rgba(17,24,39,.72);
+
+    backdrop-filter:blur(20px);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:30px;
+
+    padding:35px;
+
+    box-shadow:
+    0 0 40px rgba(34,211,238,.06);
+
+    overflow:hidden;
+
+    position:relative;
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.card h1{
+
+    font-size:42px;
+
+    margin-bottom:25px;
+
+    color:white;
+
+    letter-spacing:1px;
+
+    text-shadow:
+    0 0 15px rgba(255,255,255,.08);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn-main,
+.btn-secondary,
+.btn-danger{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:14px 24px;
+
+    border-radius:14px;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    transition:.35s;
+
+    border:none;
+
+    cursor:pointer;
+}
+
+/* MAIN BUTTON */
+
+.btn-main{
+
+    background:
+    linear-gradient(
+        135deg,
+        #8b5cf6,
+        #3b82f6
+    );
+
+    color:white;
+
+    box-shadow:
+    0 0 25px rgba(139,92,246,.25);
+}
+
+/* SECONDARY */
+
+.btn-secondary{
+
+    background:
+    rgba(255,255,255,.06);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    color:#e2e8f0;
+}
+
+/* DANGER */
+
+.btn-danger{
+
+    background:
+    linear-gradient(
+        135deg,
+        #ef4444,
+        #dc2626
+    );
+
+    color:white;
+}
+
+/* HOVER */
+
+.btn-main:hover,
+.btn-secondary:hover,
+.btn-danger:hover{
+
+    transform:
+    translateY(-3px);
+
+    opacity:.92;
+}
+
+/* =========================
+   TABLE WRAPPER
+========================= */
+
+.table-wrapper{
+
+    width:100%;
+
+    overflow-x:auto;
+
+    margin-top:25px;
+
+    border-radius:22px;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.routine{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    overflow:hidden;
+
+    border-radius:22px;
+
+    background:
+    rgba(255,255,255,.03);
+}
+
+/* =========================
+   TABLE HEADER
+========================= */
+
+.routine th{
+
+    background:
+    rgba(255,255,255,.06);
+
+    color:#f8fafc;
+
+    padding:18px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    text-transform:uppercase;
+
+    letter-spacing:.5px;
+
+    border-bottom:
+    1px solid rgba(255,255,255,.08);
+}
+
+/* =========================
+   TABLE DATA
+========================= */
+
+.routine td{
+
+    padding:18px;
+
+    color:#dbe4ee;
+
+    border-bottom:
+    1px solid rgba(255,255,255,.05);
+
+    font-size:15px;
+}
+
+/* =========================
+   ROW HOVER
+========================= */
+
+.routine tr:hover{
+
+    background:
+    rgba(255,255,255,.04);
+
+    transition:.3s;
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+.routine td .btn-secondary,
+.routine td .btn-danger{
+
+    padding:10px 16px;
+
+    font-size:14px;
+
+    margin-right:8px;
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+.table-wrapper::-webkit-scrollbar{
+
+    height:8px;
+}
+
+.table-wrapper::-webkit-scrollbar-track{
+
+    background:
+    rgba(255,255,255,.05);
+
+    border-radius:20px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb{
+
+    background:
+    linear-gradient(
+        135deg,
+        #8b5cf6,
+        #3b82f6
+    );
+
+    border-radius:20px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+    .card{
+
+        padding:20px;
+    }
+
+    .card h1{
+
+        font-size:32px;
+    }
+
+    .routine th,
+    .routine td{
+
+        padding:14px;
+
+        font-size:13px;
+    }
+
+    .btn-main,
+    .btn-secondary,
+    .btn-danger{
+
+        padding:10px 16px;
+
+        font-size:13px;
+    }
+}

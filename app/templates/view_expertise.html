@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}
+Teacher Expertise
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='expertise_view.css') }}">
+
+<div class="expertise-page">
+
+    <!-- HEADER -->
+
+    <div class="expertise-header">
+
+        <div>
+
+            <span class="page-tag">
+                🧠 AI Faculty Mapping
+            </span>
+
+            <h1>
+                Teacher Expertise
+            </h1>
+
+            <p>
+                Manage faculty subject expertise
+                and intelligent academic mapping.
+            </p>
+
+        </div>
+
+        <div class="header-actions">
+
+            <a href="/delete_all_expertise"
+               class="btn-danger"
+               onclick="return confirm('Delete ALL expertise?')">
+
+                Delete All Expertise
+
+            </a>
+
+            <a href="/"
+               class="btn-secondary">
+
+                ← Back
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="expertise-card">
+
+        <div class="table-wrapper">
+
+            <table class="expertise-table">
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Teacher</th>
+
+                    <th>Subject Expertise</th>
+
+                </tr>
+
+                {% for e in expertise %}
+
+                <tr>
+
+                    <td class="id-cell">
+
+                        #{{ e.id }}
+
+                    </td>
+
+                    <td>
+
+                        <div class="teacher-box">
+
+                            <div class="teacher-avatar">
+
+                                👨‍🏫
+
+                            </div>
+
+                            <span>
+
+                                {{ e.teacher.teacher_name }}
+
+                            </span>
+
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        <div class="subject-chip">
+
+                            {{ e.subject_name }}
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

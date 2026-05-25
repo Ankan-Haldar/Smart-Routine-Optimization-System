@@ -1,69 +1,202 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>View Teachers</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='teacher_view_style.css') }}">
-</head>
+{% extends "base.html" %}
 
-<body>
+{% block title %}
+Teachers
+{% endblock %}
 
-<h2 class="title">👨‍🏫 Teachers ({{ total }})</h2>
+{% block content %}
 
-<!-- 🔍 SEARCH -->
-<input type="text" id="searchInput" placeholder="Search teacher...">
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='teachers_view.css') }}">
 
-<!-- 🎯 FILTER -->
-<select id="filterSelect">
-    <option value="all">All</option>
-    <option value="low">Low Load (1-2)</option>
-    <option value="medium">Medium (3-4)</option>
-    <option value="high">High (5+)</option>
-</select>
+<div class="teachers-page">
 
-<div class="teacher-container" id="teacherContainer">
+    <!-- HEADER -->
 
-    {% for name, count in teachers.items() %}
-    <div class="teacher-card"
-         data-name="{{ name }}"
-         data-count="{{ count }}">
+    <div class="teachers-header">
 
-        <h3>{{ name }}</h3>
-        <p>📚 {{ count }} subjects</p>
+        <div>
+
+            <span class="page-tag">
+                👨‍🏫 Faculty Management
+            </span>
+
+            <h1>
+                Teachers Directory
+            </h1>
+
+            <p>
+                Manage university faculty members,
+                departments and academic information.
+            </p>
+
+        </div>
+
+        <div class="header-actions">
+
+            <a href="/delete_all_teachers"
+               class="btn-danger"
+               onclick="return confirm('Delete ALL teachers?')">
+
+                Delete All Teachers
+
+            </a>
+
+            <a href="/"
+               class="btn-secondary">
+
+                ← Back
+
+            </a>
+
+        </div>
 
     </div>
-    {% endfor %}
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+        <input type="text"
+               id="teacherSearch"
+               placeholder="🔍 Search Teacher..."
+               onkeyup="searchTeacher()">
+
+    </div>
+
+    <!-- TABLE CARD -->
+
+    <div class="teachers-card">
+
+        <div class="table-wrapper">
+
+            <table class="teachers-table">
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Teacher</th>
+
+                    <th>Department</th>
+
+                    <th>Email</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+                {% for t in teachers %}
+
+                <tr>
+
+                    <td class="id-cell">
+
+                        #{{ t.id }}
+
+                    </td>
+
+                    <td>
+
+                        <div class="teacher-box">
+
+                            <div class="teacher-avatar">
+
+                                👨‍🏫
+
+                            </div>
+
+                            <span>
+
+                                {{ t.teacher_name }}
+
+                            </span>
+
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        <div class="dept-chip">
+
+                            {{ t.department }}
+
+                        </div>
+
+                    </td>
+
+                    <td class="email-cell">
+
+                        {{ t.email }}
+
+                    </td>
+
+                    <td>
+
+                        <div class="action-buttons">
+
+                            <a href="/edit_teacher/{{ t.id }}"
+                               class="btn-edit">
+
+                                Edit
+
+                            </a>
+
+                            <a href="/delete_teacher/{{ t.id }}"
+                               class="btn-delete"
+                               onclick="return confirm('Delete Teacher?')">
+
+                                Delete
+
+                            </a>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+    </div>
 
 </div>
 
+<!-- SEARCH SCRIPT -->
+
 <script>
 
-const searchInput = document.getElementById("searchInput");
-const filterSelect = document.getElementById("filterSelect");
-const cards = document.querySelectorAll(".teacher-card");
+function searchTeacher() {
 
-function filterTeachers() {
-    const search = searchInput.value.toLowerCase();
-    const filter = filterSelect.value;
+    let input =
+        document.getElementById(
+            "teacherSearch"
+        ).value.toLowerCase();
 
-    cards.forEach(card => {
-        const name = card.dataset.name.toLowerCase();
-        const count = parseInt(card.dataset.count);
+    let rows =
+        document.querySelectorAll(
+            ".teachers-table tr"
+        );
 
-        let matchSearch = name.includes(search);
-        let matchFilter = true;
+    rows.forEach((row, index) => {
 
-        if (filter === "low") matchFilter = count <= 2;
-        else if (filter === "medium") matchFilter = count >= 3 && count <= 4;
-        else if (filter === "high") matchFilter = count >= 5;
+        if(index === 0) return;
 
-        card.style.display = (matchSearch && matchFilter) ? "block" : "none";
+        let text =
+            row.innerText.toLowerCase();
+
+        row.style.display =
+            text.includes(input)
+            ? ""
+            : "none";
     });
 }
 
-searchInput.addEventListener("keyup", filterTeachers);
-filterSelect.addEventListener("change", filterTeachers);
-
 </script>
 
-</body>
-</html>
+{% endblock %}

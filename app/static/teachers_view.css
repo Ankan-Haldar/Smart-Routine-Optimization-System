@@ -1,0 +1,515 @@
+/* =========================
+   PAGE
+========================= */
+
+.teachers-page{
+
+    padding:30px;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.teachers-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:30px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:35px;
+}
+
+/* TAG */
+
+.page-tag{
+
+    display:inline-block;
+
+    padding:10px 18px;
+
+    border-radius:40px;
+
+    background:
+    rgba(255,255,255,.05);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    margin-bottom:18px;
+
+    font-size:14px;
+}
+
+/* TITLE */
+
+.teachers-header h1{
+
+    font-size:54px;
+
+    margin-bottom:12px;
+
+    color:white;
+
+    text-shadow:
+    0 0 15px rgba(255,255,255,.08);
+}
+
+/* DESCRIPTION */
+
+.teachers-header p{
+
+    color:#cbd5e1;
+
+    opacity:.82;
+
+    line-height:1.8;
+
+    max-width:650px;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.header-actions{
+
+    display:flex;
+
+    gap:15px;
+
+    flex-wrap:wrap;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn-danger,
+.btn-secondary{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:15px 24px;
+
+    border-radius:16px;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    transition:.35s;
+}
+
+/* DANGER */
+
+.btn-danger{
+
+    background:
+    linear-gradient(
+        135deg,
+        #ef4444,
+        #dc2626
+    );
+
+    color:white;
+
+    box-shadow:
+    0 0 20px rgba(239,68,68,.18);
+}
+
+/* SECONDARY */
+
+.btn-secondary{
+
+    background:
+    rgba(255,255,255,.05);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    color:#e2e8f0;
+}
+
+/* HOVER */
+
+.btn-danger:hover,
+.btn-secondary:hover{
+
+    transform:
+    translateY(-4px);
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-box{
+
+    margin-bottom:25px;
+}
+
+/* INPUT */
+
+.search-box input{
+
+    width:100%;
+
+    padding:18px 22px;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:20px;
+
+    background:
+    rgba(17,24,39,.72);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(16px);
+
+    color:white;
+
+    font-size:15px;
+
+    transition:.3s;
+}
+
+/* FOCUS */
+
+.search-box input:focus{
+
+    border:
+    1px solid rgba(34,211,238,.35);
+
+    box-shadow:
+    0 0 20px rgba(34,211,238,.08);
+}
+
+/* =========================
+   CARD
+========================= */
+
+.teachers-card{
+
+    background:
+    rgba(17,24,39,.72);
+
+    backdrop-filter:blur(18px);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:30px;
+
+    padding:25px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 0 35px rgba(34,211,238,.05);
+}
+
+/* =========================
+   TABLE WRAPPER
+========================= */
+
+.table-wrapper{
+
+    width:100%;
+
+    overflow-x:auto;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.teachers-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    min-width:950px;
+}
+
+/* HEADER */
+
+.teachers-table th{
+
+    background:
+    rgba(255,255,255,.06);
+
+    color:white;
+
+    padding:18px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    border-bottom:
+    1px solid rgba(255,255,255,.08);
+}
+
+/* DATA */
+
+.teachers-table td{
+
+    padding:18px;
+
+    border-bottom:
+    1px solid rgba(255,255,255,.05);
+
+    color:#e2e8f0;
+}
+
+/* ROW HOVER */
+
+.teachers-table tr:hover{
+
+    background:
+    rgba(255,255,255,.03);
+}
+
+/* =========================
+   ID
+========================= */
+
+.id-cell{
+
+    color:#22d3ee;
+
+    font-weight:600;
+}
+
+/* =========================
+   TEACHER BOX
+========================= */
+
+.teacher-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+}
+
+/* AVATAR */
+
+.teacher-avatar{
+
+    width:46px;
+    height:46px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(139,92,246,.22),
+        rgba(59,130,246,.18)
+    );
+
+    font-size:20px;
+
+    box-shadow:
+    0 0 20px rgba(139,92,246,.12);
+}
+
+/* =========================
+   DEPARTMENT CHIP
+========================= */
+
+.dept-chip{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:10px 16px;
+
+    border-radius:40px;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(34,211,238,.16),
+        rgba(59,130,246,.10)
+    );
+
+    border:
+    1px solid rgba(34,211,238,.12);
+
+    color:#e0f2fe;
+
+    font-size:14px;
+
+    font-weight:500;
+}
+
+/* =========================
+   EMAIL
+========================= */
+
+.email-cell{
+
+    color:#cbd5e1;
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+.action-buttons{
+
+    display:flex;
+
+    gap:10px;
+}
+
+/* EDIT */
+
+.btn-edit{
+
+    padding:10px 16px;
+
+    border-radius:12px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #8b5cf6,
+        #3b82f6
+    );
+
+    color:white;
+
+    text-decoration:none;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    transition:.3s;
+}
+
+/* DELETE */
+
+.btn-delete{
+
+    padding:10px 16px;
+
+    border-radius:12px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #ef4444,
+        #dc2626
+    );
+
+    color:white;
+
+    text-decoration:none;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    transition:.3s;
+}
+
+/* HOVER */
+
+.btn-edit:hover,
+.btn-delete:hover{
+
+    transform:
+    translateY(-3px);
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+.table-wrapper::-webkit-scrollbar{
+
+    height:10px;
+}
+
+.table-wrapper::-webkit-scrollbar-track{
+
+    background:
+    rgba(255,255,255,.04);
+
+    border-radius:20px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb{
+
+    background:
+    linear-gradient(
+        135deg,
+        #8b5cf6,
+        #3b82f6
+    );
+
+    border-radius:20px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+    .teachers-page{
+
+        padding:15px;
+    }
+
+    .teachers-header h1{
+
+        font-size:40px;
+    }
+
+    .teachers-card{
+
+        padding:15px;
+    }
+
+    .btn-danger,
+    .btn-secondary{
+
+        width:100%;
+    }
+
+    .action-buttons{
+
+        flex-direction:column;
+    }
+}

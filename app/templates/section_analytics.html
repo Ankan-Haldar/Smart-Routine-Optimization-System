@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block title %}
+Section Analytics
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static',
+      filename='section_analytics.css') }}">
+
+<div class="analytics-page">
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+
+    <div class="analytics-header">
+
+        <span class="analytics-tag">
+
+            🏫 Academic Analytics
+
+        </span>
+
+        <h1>
+
+            Section Analytics Dashboard
+
+        </h1>
+
+        <p>
+
+            Analyze section-wise class load,
+            theory/lab ratio and academic
+            scheduling efficiency using
+            AI-powered timetable insights.
+
+        </p>
+
+    </div>
+
+    <!-- =====================================
+         GRID
+    ====================================== -->
+
+    <div class="analytics-grid">
+
+        {% for sec, data in section_data.items() %}
+
+        <!-- CARD -->
+
+        <div class="analytics-card">
+
+            <!-- TOP -->
+
+            <div class="card-top">
+
+                <div class="card-icon">
+
+                    🏫
+
+                </div>
+
+                <div>
+
+                    <h2>
+
+                        {{ sec }}
+
+                    </h2>
+
+                    <span class="section-sub">
+
+                        Academic Section
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- INFO -->
+
+            <div class="analytics-info">
+
+                <!-- TOTAL -->
+
+                <div class="info-row">
+
+                    <span>
+
+                        Total Classes
+
+                    </span>
+
+                    <strong>
+
+                        {{ data.total }}
+
+                    </strong>
+
+                </div>
+
+                <!-- THEORY -->
+
+                <div class="info-row">
+
+                    <span>
+
+                        Theory Classes
+
+                    </span>
+
+                    <strong>
+
+                        {{ data.theory }}
+
+                    </strong>
+
+                </div>
+
+                <!-- LAB -->
+
+                <div class="info-row">
+
+                    <span>
+
+                        Lab Classes
+
+                    </span>
+
+                    <strong>
+
+                        {{ data.lab }}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <!-- =====================================
+                 THEORY RATIO
+            ====================================== -->
+
+            <div class="ratio-section">
+
+                <div class="ratio-title">
+
+                    📘 Theory / Lab Ratio
+
+                </div>
+
+                <div class="ratio-bar">
+
+                    <div class="theory-fill"
+
+                        style="--theory:
+                        {{ ((data.theory /
+                        data.total) * 100)
+                        |round(0) }}%;">
+
+                    </div>
+
+                </div>
+
+                <div class="ratio-text">
+
+                    {{ ((data.theory /
+                    data.total) * 100)
+                    |round(0) }}%
+                    Theory Classes
+
+                </div>
+
+            </div>
+
+            <!-- =====================================
+                 FOOTER STATUS
+            ====================================== -->
+
+            <div class="status-row">
+
+                {% if data.lab > data.theory %}
+
+                <span class="status lab-heavy">
+
+                    🧪 Lab Focused
+
+                </span>
+
+                {% elif data.theory > data.lab %}
+
+                <span class="status theory-heavy">
+
+                    📘 Theory Focused
+
+                </span>
+
+                {% else %}
+
+                <span class="status balanced">
+
+                    ⚖ Balanced
+
+                </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

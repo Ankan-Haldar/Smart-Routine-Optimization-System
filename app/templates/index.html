@@ -2,78 +2,163 @@
 
 {% block content %}
 
-<div class="main-wrapper">
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='index.css') }}">
 
-<!-- SYSTEM TITLE CARD -->
-<div class="card header-card">
+<!-- HERO SECTION -->
 
-<h1>📅 Routine Optimization System</h1>
+<div class="hero-section">
 
-<p class="subtitle">
-Generate and manage MCA class routines automatically
-</p>
+    <!-- LEFT SIDE -->
 
-<div class="generate-box">
+    <div class="hero-left">
 
-<form method="POST" action="{{ url_for('main.generate') }}">
-<button class="btn-main">
-Generate Main Routine
-</button>
-</form>
+        <span class="tag">
+            ✨ AI Powered Academic Scheduler
+        </span>
 
+        <h1>
+            Smart Routine <br>
+            Optimization System
+        </h1>
 
-<a href="/add_subject" class="btn-secondary">
-Add Subjects
-</a>
+        <p>
+            Generate, manage and optimize university
+            class routines automatically with intelligent
+            scheduling and faculty management.
+        </p>
+
+        <div class="hero-buttons">
+
+            <form method="POST"
+                  action="/generate">
+
+                <button type="submit"
+                        class="primary-btn">
+
+                    ⚡ Generate Routine
+
+                </button>
+
+            </form>
+
+            <a href="/add_subject"
+               class="secondary-btn">
+
+                ➕ Add Subjects
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+
+    <div class="hero-right">
+
+        <!-- AI GLOBE -->
+
+        <div class="ai-globe-container">
+
+            <!-- OUTER RINGS -->
+
+            <div class="ring ring1"></div>
+            <div class="ring ring2"></div>
+            <div class="ring ring3"></div>
+
+            <!-- PARTICLES -->
+
+            <div class="particle particle1"></div>
+            <div class="particle particle2"></div>
+            <div class="particle particle3"></div>
+
+            <!-- GLOW -->
+
+            <div class="ai-glow"></div>
+
+            <!-- MAIN GLOBE -->
+
+            <div class="ai-globe">
+
+                <!-- GRID -->
+
+                <div class="grid-lines"></div>
+
+                <!-- INNER LIGHT -->
+
+                <div class="inner-light"></div>
+
+                <!-- AI TEXT -->
+
+                <div class="ai-text">
+                    AI
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
-</div>
+<!-- DASHBOARD CARDS -->
 
-<!-- SECTION ROUTINE CARD -->
-<div class="card">
+<div class="dashboard-cards">
 
-<h2>View Section Routines</h2>
+    <a href="/subjects"
+       class="dash-card">
 
-<p class="subtitle">
-View generated timetable for each section
-</p>
+        <div class="icon">📚</div>
 
-<div class="buttons">
-<a href="/teachers">View Teacher Routine</a>
-<a href="{{ url_for('main.view') }}">
-📊 All Sections
-</a>
+        <h3>Subjects</h3>
 
-{% set sections = ['A','B'] %}
+        <p>
+            Manage all academic subjects
+            and semesters.
+        </p>
 
-<!-- MCA 1 : Semester 1,2 -->
-{% for sem in [1,2] %}
-    {% for s in sections %}
-    <a href="{{ url_for('main.view_section',
-                        year='MCA1',
-                        semester=sem,
-                        section=s) }}">
-        🎓 MCA1 Sem{{ sem }}-{{ s }}
     </a>
-    {% endfor %}
-{% endfor %}
 
-<!-- MCA 2 : Semester 3,4 -->
-{% for sem in [3,4] %}
-    {% for s in sections %}
-    <a href="{{ url_for('main.view_section',
-                        year='MCA2',
-                        semester=sem,
-                        section=s) }}">
-        🎓 MCA2 Sem{{ sem }}-{{ s }}
+    <a href="/view_teachers"
+       class="dash-card">
+
+        <div class="icon">👨‍🏫</div>
+
+        <h3>Teachers</h3>
+
+        <p>
+            Add and manage faculty members.
+        </p>
+
     </a>
-    {% endfor %}
-{% endfor %}
 
-</div>
+    <a href="/view_expertise"
+       class="dash-card">
 
-</div>
+        <div class="icon">🧠</div>
+
+        <h3>Expertise</h3>
+
+        <p>
+            Track teacher expertise mapping.
+        </p>
+
+    </a>
+
+    <a href="/view"
+       class="dash-card">
+
+        <div class="icon">📅</div>
+
+        <h3>View Routine</h3>
+
+        <p>
+            Access generated class routines.
+        </p>
+
+    </a>
 
 </div>
 

@@ -1,0 +1,332 @@
+{% extends "base.html" %}
+
+{% block title %}
+Teacher Analytics
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static',
+      filename='teacher_analytics.css') }}">
+
+<div class="analytics-page">
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+
+    <div class="analytics-header">
+
+        <span class="analytics-tag">
+
+            📊 AI Analytics System
+
+        </span>
+
+        <h1>
+
+            Teacher Workload Dashboard
+
+        </h1>
+
+        <p>
+
+            Analyze faculty workload,
+            free periods, teaching pressure
+            and weekly engagement with
+            AI-powered timetable analytics.
+
+        </p>
+
+    </div>
+
+    <!-- =====================================
+         TOP STATS
+    ====================================== -->
+
+    <div class="top-stats">
+
+        <!-- TOTAL TEACHERS -->
+
+        <div class="stats-box">
+
+            <div class="stats-icon">
+
+                👨‍🏫
+
+            </div>
+
+            <div>
+
+                <h2>
+
+                    {{ teacher_data|length }}
+
+                </h2>
+
+                <p>
+
+                    Total Teachers
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- OVERLOADED -->
+
+        <div class="stats-box">
+
+            <div class="stats-icon">
+
+                🔥
+
+            </div>
+
+            <div>
+
+                <h2>
+
+                    {% set overload = namespace(count=0) %}
+
+                    {% for teacher, data in teacher_data.items() %}
+
+                        {% if data.load >= 70 %}
+
+                            {% set overload.count =
+                            overload.count + 1 %}
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                    {{ overload.count }}
+
+                </h2>
+
+                <p>
+
+                    High Load Faculty
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- AVG LOAD -->
+
+        <div class="stats-box">
+
+    <div class="stats-icon">
+
+        ⚡
+
+    </div>
+
+    <div>
+
+        <h2>
+
+            {% set total = namespace(load=0) %}
+
+            {% for teacher, data in teacher_data.items() %}
+
+                {% set total.load =
+                total.load + data.load %}
+
+            {% endfor %}
+
+            {% if teacher_data|length > 0 %}
+
+                {{ (total.load /
+                teacher_data|length)
+                |round(1) }}%
+
+            {% else %}
+
+                0%
+
+            {% endif %}
+
+        </h2>
+
+        <p>
+
+            Average Workload
+
+        </p>
+
+    </div>
+
+</div>
+
+    </div>
+
+    <!-- =====================================
+         ANALYTICS GRID
+    ====================================== -->
+
+    <div class="analytics-grid">
+
+        {% for teacher, data in teacher_data.items() %}
+
+        <!-- CARD -->
+
+        <div class="analytics-card">
+
+            <!-- HEADER -->
+
+            <div class="teacher-top">
+
+                <div class="teacher-avatar">
+
+                    👨‍🏫
+
+                </div>
+
+                <div>
+
+                    <h2>
+
+                        {{ teacher }}
+
+                    </h2>
+
+                    <span class="teacher-role">
+
+                        Faculty Member
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- INFO -->
+
+            <div class="analytics-info">
+
+                <div class="info-row">
+
+                    <span>
+
+                        Weekly Classes
+
+                    </span>
+
+                    <strong>
+
+                        {{ data.classes }}
+
+                    </strong>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span>
+
+                        Free Periods
+
+                    </span>
+
+                    <strong>
+
+                        {{ data.free }}
+
+                    </strong>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span>
+
+                        Workload
+
+                    </span>
+
+                    <strong>
+
+                        {{ data.load }}%
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <!-- PROGRESS -->
+
+            <div class="progress-section">
+
+                <div class="progress-label">
+
+                    <span>
+
+                        Weekly Load
+
+                    </span>
+
+                    <span>
+
+                        {{ data.load }}%
+
+                    </span>
+
+                </div>
+
+                <div class="progress-bar">
+
+                    <div class="progress-fill"
+                        style="--load: {{ data.load }}%;">
+                </div>
+
+                </div>
+
+            </div>
+
+            <!-- STATUS -->
+
+            <div class="status-row">
+
+                {% if data.load <= 40 %}
+
+                <span class="status low">
+
+                    🟢 Balanced Load
+
+                </span>
+
+                {% elif data.load <= 70 %}
+
+                <span class="status medium">
+
+                    🟡 Medium Pressure
+
+                </span>
+
+                {% else %}
+
+                <span class="status high">
+
+                    🔴 Overloaded
+
+                </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

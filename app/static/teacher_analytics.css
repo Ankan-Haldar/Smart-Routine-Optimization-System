@@ -1,0 +1,538 @@
+/* =========================
+   BODY
+========================= */
+
+body{
+
+    margin:0;
+
+    padding:0;
+
+    font-family:
+    "Segoe UI",
+    sans-serif;
+
+    background:
+    linear-gradient(
+        135deg,
+        #020617,
+        #0f172a,
+        #111827
+    );
+
+    color:white;
+
+    min-height:100vh;
+}
+
+/* =========================
+   GLOBAL
+========================= */
+
+*{
+
+    box-sizing:border-box;
+
+    transition:
+    all .25s ease;
+}
+
+/* =========================
+   PAGE
+========================= */
+
+.analytics-page{
+
+    padding:30px;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.analytics-header{
+
+    margin-bottom:35px;
+}
+
+/* TAG */
+
+.analytics-tag{
+
+    display:inline-block;
+
+    padding:10px 18px;
+
+    border-radius:40px;
+
+    background:
+    rgba(255,255,255,.06);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    margin-bottom:20px;
+
+    font-size:14px;
+
+    color:white;
+}
+
+/* TITLE */
+
+.analytics-header h1{
+
+    font-size:52px;
+
+    margin-bottom:15px;
+
+    color:white;
+
+    text-shadow:
+    0 0 15px rgba(255,255,255,.08);
+}
+
+/* DESCRIPTION */
+
+.analytics-header p{
+
+    color:#cbd5e1;
+
+    max-width:850px;
+
+    line-height:1.7;
+
+    opacity:.85;
+}
+
+/* =========================
+   TOP STATS
+========================= */
+
+.top-stats{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(260px,1fr));
+
+    gap:22px;
+
+    margin-bottom:35px;
+}
+
+/* STATS BOX */
+
+.stats-box{
+
+    background:
+    rgba(15,23,42,.78);
+
+    backdrop-filter:
+    blur(18px);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:28px;
+
+    padding:28px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    box-shadow:
+    0 0 30px rgba(34,211,238,.05);
+
+    transition:.35s;
+}
+
+/* HOVER */
+
+.stats-box:hover{
+
+    transform:
+    translateY(-5px);
+
+    border:
+    1px solid rgba(139,92,246,.25);
+
+    box-shadow:
+    0 0 30px rgba(139,92,246,.18);
+}
+
+/* ICON */
+
+.stats-icon{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:34px;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(139,92,246,.2),
+        rgba(59,130,246,.15)
+    );
+}
+
+/* NUMBER */
+
+.stats-box h2{
+
+    font-size:36px;
+
+    margin-bottom:5px;
+
+    color:white;
+}
+
+/* LABEL */
+
+.stats-box p{
+
+    color:#cbd5e1;
+
+    font-size:15px;
+}
+
+/* =========================
+   GRID
+========================= */
+
+.analytics-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(320px,1fr));
+
+    gap:25px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.analytics-card{
+
+    background:
+    rgba(15,23,42,.78);
+
+    backdrop-filter:
+    blur(18px);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:30px;
+
+    padding:28px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 0 30px rgba(34,211,238,.05);
+
+    transition:.35s;
+}
+
+/* GLOW */
+
+.analytics-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:140px;
+
+    height:140px;
+
+    background:
+    rgba(255,255,255,.04);
+
+    border-radius:50%;
+
+    top:-50px;
+
+    right:-50px;
+}
+
+/* HOVER */
+
+.analytics-card:hover{
+
+    transform:
+    translateY(-6px);
+
+    border:
+    1px solid rgba(139,92,246,.25);
+
+    box-shadow:
+    0 0 30px rgba(139,92,246,.18);
+}
+
+/* =========================
+   TEACHER TOP
+========================= */
+
+.teacher-top{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    margin-bottom:25px;
+
+    position:relative;
+
+    z-index:2;
+}
+
+/* AVATAR */
+
+.teacher-avatar{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:34px;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(139,92,246,.18),
+        rgba(59,130,246,.12)
+    );
+}
+
+/* NAME */
+
+.teacher-top h2{
+
+    font-size:26px;
+
+    margin-bottom:6px;
+
+    color:white;
+}
+
+/* ROLE */
+
+.teacher-role{
+
+    color:#cbd5e1;
+
+    font-size:14px;
+}
+
+/* =========================
+   INFO
+========================= */
+
+.analytics-info{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+    margin-bottom:25px;
+
+    position:relative;
+
+    z-index:2;
+}
+
+/* ROW */
+
+.info-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+}
+
+.info-row span{
+
+    color:#cbd5e1;
+}
+
+.info-row strong{
+
+    color:white;
+}
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress-section{
+
+    margin-bottom:22px;
+
+    position:relative;
+
+    z-index:2;
+}
+
+/* LABEL */
+
+.progress-label{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-bottom:10px;
+
+    font-size:14px;
+
+    color:#cbd5e1;
+}
+
+/* BAR */
+
+.progress-bar{
+
+    width:100%;
+
+    height:14px;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    background:
+    rgba(255,255,255,.06);
+}
+
+/* FILL */
+
+.progress-fill{
+
+    height:100%;
+
+    width:var(--load);
+
+    border-radius:20px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #22d3ee,
+        #8b5cf6
+    );
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.status-row{
+
+    position:relative;
+
+    z-index:2;
+}
+
+.status{
+
+    display:inline-block;
+
+    padding:10px 16px;
+
+    border-radius:14px;
+
+    font-size:14px;
+
+    font-weight:600;
+}
+
+/* LOW */
+
+.status.low{
+
+    background:
+    rgba(34,197,94,.15);
+
+    color:#22c55e;
+}
+
+/* MEDIUM */
+
+.status.medium{
+
+    background:
+    rgba(250,204,21,.15);
+
+    color:#facc15;
+}
+
+/* HIGH */
+
+.status.high{
+
+    background:
+    rgba(239,68,68,.15);
+
+    color:#ef4444;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+    .analytics-page{
+
+        padding:15px;
+    }
+
+    .analytics-header h1{
+
+        font-size:36px;
+    }
+
+    .analytics-grid{
+
+        grid-template-columns:1fr;
+    }
+
+    .top-stats{
+
+        grid-template-columns:1fr;
+    }
+}

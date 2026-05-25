@@ -1,78 +1,347 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 
-<html>
+{% block title %}
+Routine
+{% endblock %}
 
-<head>
-<title>Routine</title>
+{% block content %}
 
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
+<meta charset="UTF-8">
 
-<body>
+<link rel="stylesheet"
+href="http://127.0.0.1:5000/static/routine_view.css">
 
-{% set times = ["9-10","10-11","11-12","12-1","1-2"] %}
-{% set days = ["Mon","Tue","Wed","Thu","Fri"] %}
+<!-- <link rel="stylesheet"
+      href="{{ url_for('static',
+      filename='routine_view.css') }}"> -->
 
-<div class="container">
+{% set times = [
+"9-10",
+"10-11",
+"11-12",
+"12-1",
+"1-2",
+"2-3",
+"3-4",
+"4-5"
+] %}
 
-<h1>{{ title }} Routine</h1>
+{% set days = [
+"Mon",
+"Tue",
+"Wed",
+"Thu",
+"Fri",
+"Sat"
+] %}
 
-<a href="/" class="back-link">← Back to Dashboard</a>
+<div class="routine-page">
 
-<table class="routine">
+    <!-- =====================================
+         HEADER
+    ====================================== -->
 
-<tr>
-<th>Day</th>
+    <div class="routine-header">
 
-{% for t in times %}
+        <div>
 
-<th>{{t}}</th>
-{% endfor %}
+            <span class="routine-tag">
 
-</tr>
+                📅 AI Generated Timetable
 
-{% for d in days %}
+            </span>
 
-<tr>
+            <h1>
 
-<th class="day">{{d}}</th>
+                Smart Routine Viewer
 
-{% for p in range(1,6) %}
+            </h1>
 
-<td>
+            <p>
 
-{% set found = false %}
+                AI optimized class routine
+                with smart faculty allocation.
 
-{% for row in timetable %}
-{% if row.day==d and row.period==p %}
+            </p>
 
-{% set found = true %}
+        </div>
 
-<div class="slot {{ row.class_type or 'theory' }}">
-<div class="subject">{{row.subject}}</div>
-<div class="class">{{row.year}}-Sem{{row.semester}}-{{row.section}}</div>
-<div class="teacher">{{row.teacher}}</div>
-<div class="room">{{row.room}}</div>
+    </div>
+
+
+    <!-- =====================================
+     EXPORT BUTTONS
+===================================== -->
+
+<div class="export-buttons">
+
+    <!-- PDF -->
+
+    <a href="/export_pdf"
+       class="export-btn pdf">
+
+        📄 Export PDF
+
+    </a>
+
+    <!-- EXCEL -->
+
+    <a href="/export_excel"
+       class="export-btn excel">
+
+        📊 Export Excel
+
+    </a>
+
 </div>
 
-{% endif %}
-{% endfor %}
+    <!-- =====================================
+     FILTER SYSTEM
+===================================== -->
 
-{% if not found %}
+<div class="filter-card">
 
-<div class="free-slot">FREE</div>
-{% endif %}
+    <form method="GET"
+          action="/view"
+          class="filter-form">
 
-</td>
+        <!-- SEMESTER -->
 
-{% endfor %}
+        <select name="semester">
 
-</tr>
-{% endfor %}
+            <option value="">
 
-</table>
+                🎓 All Semesters
+
+            </option>
+
+            <option value="1"
+            {% if request.args.get('semester') == '1' %}
+            selected
+            {% endif %}
+            >
+
+                MCA Semester 1
+
+            </option>
+
+            <option value="2"
+            {% if request.args.get('semester') == '2' %}
+            selected
+            {% endif %}
+            >
+
+                MCA Semester 2
+
+            </option>
+
+            <option value="3"
+            {% if request.args.get('semester') == '3' %}
+            selected
+            {% endif %}
+            >
+
+                MCA Semester 3
+
+            </option>
+
+            <option value="4"
+            {% if request.args.get('semester') == '4' %}
+            selected
+            {% endif %}
+            >
+
+                MCA Semester 4
+
+            </option>
+
+        </select>
+
+        <!-- SECTION -->
+
+        <select name="section">
+
+            <option value="">
+
+                🏫 All Sections
+
+            </option>
+
+            <option value="A"
+            {% if request.args.get('section') == 'A' %}
+            selected
+            {% endif %}
+            >
+
+                Section A
+
+            </option>
+
+            <option value="B"
+            {% if request.args.get('section') == 'B' %}
+            selected
+            {% endif %}
+            >
+
+                Section B
+
+            </option>
+
+        </select>
+
+        <!-- BUTTON -->
+
+        <button type="submit"
+                class="filter-btn">
+
+            ⚡ View Routine
+
+        </button>
+
+    </form>
+
+</div>
+    <!-- =====================================
+         TABLE
+    ====================================== -->
+
+    <div class="routine-card">
+
+        <div class="table-wrapper">
+
+            <table class="routine-table">
+
+                <!-- HEADER -->
+
+                <tr>
+
+                    <th>
+                        Day
+                    </th>
+
+                    {% for t in times %}
+
+                    <th>
+
+                        {{ t }}
+
+                    </th>
+
+                    {% endfor %}
+
+                </tr>
+
+                <!-- DAYS -->
+
+                {% for d in days %}
+
+                <tr>
+
+                    <td class="day-cell">
+
+                        {{ d }}
+
+                    </td>
+
+                    {% for p in range(1,9) %}
+
+                    <td>
+
+                        {% set found = namespace(data=None) %}
+
+                        {% for row in timetable %}
+
+                            {% if row[0] == d
+                            and row[1] == p %}
+
+                                {% if
+                                    (
+                                    not request.args.get('semester')
+                                    or row[3]|string ==
+                                    request.args.get('semester')
+                                    )
+
+                                    and
+
+                                    (
+                                    not request.args.get('section')
+                                    or row[4] ==
+                                    request.args.get('section')
+                                    )
+                                %}
+
+                                    {% set found.data = row %}
+
+                                {% endif %}
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                        {% if found.data %}
+
+                        <div class="slot">
+
+                            <!-- SUBJECT -->
+
+                            <div class="subject">
+
+                                {{ found.data[5] }}
+
+                            </div>
+
+                            <!-- CLASS -->
+
+                            <div class="class-info">
+
+                                MCA Sem {{ found.data[3] }}
+                                •
+                                Section {{ found.data[4] }}
+
+                            </div>
+
+                            <!-- TEACHER -->
+
+                            <div class="teacher">
+
+                                👨‍🏫 {{ found.data[6] }}
+
+                            </div>
+
+                            <!-- ROOM -->
+
+                            <div class="room">
+
+                                📍 {{ found.data[8] }}
+
+                            </div>
+
+                        </div>
+
+                        {% else %}
+
+                        <div class="free-slot">
+
+                            FREE
+
+                        </div>
+
+                        {% endif %}
+
+                    </td>
+
+                    {% endfor %}
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+    </div>
 
 </div>
 
-</body>
-</html>
+{% endblock %}
