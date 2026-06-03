@@ -27,6 +27,8 @@ body{
     color:white;
 
     position:relative;
+
+    overflow-y:auto;
 }
 
 /* =========================
@@ -521,4 +523,389 @@ body{
 
         padding:30px;
     }
+}
+
+
+/* =========================
+STUDENT PORTAL
+========================= */
+
+.student-portal{
+
+margin-top: 25px;
+
+text-align: center;
+
+}
+
+.divider{
+
+position: relative;
+
+margin: 20px 0;
+
+}
+
+.divider::before{
+
+
+content: "";
+
+position: absolute;
+
+top: 50%;
+
+left: 0;
+
+width: 100%;
+
+height: 1px;
+
+background: rgba(255,255,255,0.15);
+
+
+}
+
+.divider span{
+
+
+position: relative;
+
+padding: 0 15px;
+
+background: #111827;
+
+color: #aaa;
+
+font-size: 13px;
+
+
+}
+
+.student-portal h3{
+
+
+color: white;
+
+margin-bottom: 10px;
+
+}
+
+.student-portal p{
+
+
+color: #bdbdbd;
+
+font-size: 14px;
+
+margin-bottom: 15px;
+
+
+}
+
+.student-actions{
+
+
+display: flex;
+
+gap: 10px;
+
+justify-content: center;
+
+
+}
+
+.student-register,
+.student-login{
+
+
+text-decoration: none;
+
+padding: 12px 20px;
+
+border-radius: 12px;
+
+font-weight: 600;
+
+transition: 0.3s;
+
+
+}
+
+.student-register{
+
+
+background: #10b981;
+
+color: white;
+
+
+}
+
+.student-login{
+
+
+background: #6366f1;
+
+color: white;
+
+
+}
+
+.student-register:hover,
+.student-login:hover{
+
+
+transform: translateY(-2px);
+
+
+}
+
+
+.input-group select{
+
+    width:100%;
+
+    padding:18px;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:16px;
+
+    background:
+    rgba(255,255,255,.05);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    color:white;
+
+    font-size:15px;
+
+    appearance:none;
+
+    -webkit-appearance:none;
+
+    -moz-appearance:none;
+
+    cursor:pointer;
+}
+
+.input-group select option{
+
+    background:#111827;
+
+    color:white;
+}
+
+
+
+
+/* ====================================
+   MOBILE RESPONSIVE FIX
+==================================== */
+
+@media screen and (max-width: 768px){
+
+    body{
+
+        overflow-y: auto;
+
+        overflow-x: hidden;
+    }
+
+    .login-container{
+
+        flex-direction: column;
+
+        padding: 20px;
+
+        gap: 30px;
+
+        min-height: auto;
+    }
+
+    .login-left{
+
+        text-align: center;
+
+        align-items: center;
+    }
+
+    .login-left h1{
+
+        font-size: 34px;
+
+        line-height: 1.2;
+    }
+
+    .login-left p{
+
+        font-size: 15px;
+
+        max-width: 100%;
+
+        margin-bottom: 25px;
+    }
+
+    .login-tag{
+
+        font-size: 13px;
+
+        padding: 10px 18px;
+    }
+
+    .mini-globe{
+
+        width: 180px;
+
+        height: 180px;
+    }
+
+    .mini-core{
+
+        width: 100px;
+
+        height: 100px;
+
+        font-size: 36px;
+    }
+
+    .ring-a{
+
+        width: 160px;
+
+        height: 65px;
+    }
+
+    .ring-b{
+
+        width: 190px;
+
+        height: 80px;
+    }
+
+    .login-right{
+
+        width: 100%;
+    }
+
+    .login-card{
+
+        width: 100%;
+
+        max-width: 100%;
+
+        padding: 25px;
+
+        border-radius: 22px;
+    }
+
+    .login-card h2{
+
+        font-size: 28px;
+
+        text-align: center;
+    }
+
+    .sub-text{
+
+        text-align: center;
+    }
+
+    .input-group input{
+
+        padding: 16px;
+
+        font-size: 14px;
+    }
+
+    .btn-login{
+
+        padding: 16px;
+
+        font-size: 15px;
+    }
+
+    .student-actions{
+
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+    .student-register,
+    .student-login{
+
+        width: 100%;
+
+        text-align: center;
+    }
+}
+
+
+/* EXTRA SMALL DEVICES */
+
+@media screen and (max-width: 480px){
+
+    .login-container{
+
+        padding: 15px;
+    }
+
+    .login-left h1{
+
+        font-size: 28px;
+    }
+
+    .login-left p{
+
+        font-size: 14px;
+    }
+
+    .mini-globe{
+
+        width: 150px;
+
+        height: 150px;
+    }
+
+    .mini-core{
+
+        width: 85px;
+
+        height: 85px;
+
+        font-size: 30px;
+    }
+
+    .login-card{
+
+        padding: 20px;
+    }
+
+    .login-card h2{
+
+        font-size: 24px;
+    }
+}
+
+@media (max-width:768px){
+
+    body{
+
+        overflow-y:auto;
+
+    }
+
+    .login-container{
+
+        min-height:auto;
+
+        padding:30px 20px;
+
+    }
+
 }

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Student Registration</title>
+
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='login.css') }}">
+
+
+</head>
+
+<body>
+
+<div class="bg-glow glow1"></div>
+<div class="bg-glow glow2"></div>
+
+<div class="login-container">
+
+<div class="login-left">
+
+    <span class="login-tag">
+        🎓 Student Portal
+    </span>
+
+    <h1>
+        Smart Routine <br>
+        Optimization System
+    </h1>
+
+    <p>
+        Create your student account
+        to access your routine anytime.
+    </p>
+
+    <div class="mini-globe">
+
+        <div class="mini-ring ring-a"></div>
+
+        <div class="mini-ring ring-b"></div>
+
+        <div class="mini-core">
+            AI
+        </div>
+
+    </div>
+
+</div>
+
+<div class="login-right">
+
+    <div class="login-card">
+
+        <h2>
+            Student Registration 🎓
+        </h2>
+
+        <p class="sub-text">
+            Create your account
+        </p>
+
+        {% if error %}
+
+        <div class="error-box">
+
+            {{ error }}
+
+        </div>
+
+        {% endif %}
+
+        <form method="POST">
+
+            <div class="input-group">
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Full Name"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email Address"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <input
+                    type="number"
+                    name="semester"
+                    placeholder="Semester"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <select
+                    name="section"
+                    required
+                >
+
+                    <option value="">
+                        Select Section
+                    </option>
+
+                    <option value="A">
+                        A
+                    </option>
+
+                    <option value="B">
+                        B
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="input-group password-box">
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Password"
+                    required
+                >
+
+                <span onclick="togglePassword()">
+
+                    👁️
+
+                </span>
+
+            </div>
+
+            <button
+                type="submit"
+                class="btn-login"
+            >
+
+                Register
+
+            </button>
+
+            <a
+                href="/student_login"
+                class="back-btn"
+            >
+
+                Already have an account?
+
+            </a>
+
+            <a
+                href="/login"
+                class="back-btn"
+            >
+
+                ← Admin Login
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+</div>
+
+<script>
+
+function togglePassword(){
+
+    let pass =
+        document.getElementById(
+            "password"
+        );
+
+    pass.type =
+        pass.type === "password"
+        ? "text"
+        : "password";
+}
+
+</script>
+
+</body>
+
+</html>

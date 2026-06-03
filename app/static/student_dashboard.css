@@ -1,0 +1,132 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(
+        135deg,
+        #08112b,
+        #020d2e,
+        #24104d
+    );
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:30px;
+}
+
+.dashboard-card{
+
+    width:100%;
+    max-width:700px;
+
+    background:rgba(255,255,255,0.05);
+
+    backdrop-filter:blur(15px);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:25px;
+
+    padding:40px;
+
+    text-align:center;
+
+    box-shadow:
+    0 20px 60px rgba(0,0,0,.35);
+}
+
+.dashboard-card h1{
+
+    color:white;
+
+    margin-bottom:25px;
+
+    font-size:38px;
+}
+
+.student-info{
+
+    margin-bottom:30px;
+}
+
+.student-info p{
+
+    color:#d1d5db;
+
+    font-size:18px;
+
+    margin:10px 0;
+}
+
+.btn-group{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+    flex-wrap:wrap;
+}
+
+.btn{
+
+    text-decoration:none;
+
+    padding:14px 28px;
+
+    border-radius:14px;
+
+    font-weight:600;
+
+    color:white;
+
+    transition:.3s;
+}
+
+.btn-routine{
+
+    background:linear-gradient(
+        90deg,
+        #7c3aed,
+        #3b82f6
+    );
+}
+
+.btn-logout{
+
+    background:#ef4444;
+}
+
+.btn:hover{
+
+    transform:translateY(-3px);
+}
+
+@media(max-width:768px){
+
+    .dashboard-card{
+
+        padding:25px;
+    }
+
+    .dashboard-card h1{
+
+        font-size:28px;
+    }
+
+    .student-info p{
+
+        font-size:16px;
+    }
+
+    .btn{
+
+        width:100%;
+    }
+}

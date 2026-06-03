@@ -34,6 +34,7 @@ from app.models import (
 
 from app.ortools_scheduler import run_ortools
 
+from app.models import Student
 
 main = Blueprint("main", __name__)
 
@@ -1397,3 +1398,222 @@ def teacher_routine(teacher):
         teacher=teacher
     )
 
+
+
+# =================================================
+
+# STUDENT REGISTER
+
+# =================================================
+
+@main.route(
+"/student_register",
+methods=["GET", "POST"]
+)
+def student_register():
+
+
+    if request.method == "POST":
+
+        email = request.form["email"]
+
+        existing = Student.query.filter_by(
+            email=email
+        ).first()
+
+        if existing:
+
+            return render_template(
+            "student_register.html",
+            error="Email already registered"
+        )
+
+        student = Student(
+
+        name=request.form["name"],
+
+        email=request.form["email"],
+
+        semester=int(
+            request.form["semester"]
+        ),
+
+        section=request.form["section"],
+
+        password=request.form["password"]
+
+    )
+
+        db.session.add(student)
+
+        db.session.commit()
+
+        return redirect(
+        url_for(
+            "main.student_login"
+        )
+    )
+
+    return render_template(
+        "student_register.html"
+    )
+
+
+
+# =================================================
+# STUDENT LOGIN
+# =================================================
+
+@main.route(
+    "/student_login",
+    methods=["GET", "POST"]
+)
+def student_login():
+
+    if request.method == "POST":
+
+        student = Student.query.filter_by(
+
+            email=request.form["email"],
+
+            password=request.form["password"]
+
+        ).first()
+
+        if student:
+
+            session["student_id"] = student.id
+
+            session["semester"] = student.semester
+
+            session["section"] = student.section
+
+            session["role"] = "student"
+
+            return redirect(
+                url_for(
+                    "main.student_dashboard"
+                )
+            )
+
+        return render_template(
+
+            "student_login.html",
+
+            error="Invalid Email or Password"
+
+        )
+
+    return render_template(
+        "student_login.html"
+    )
+
+
+# =================================================
+# STUDENT LOGOUT
+# =================================================
+
+@main.route("/student_logout")
+def student_logout():
+
+    session.pop(
+        "student_id",
+        None
+    )
+
+    session.pop(
+        "semester",
+        None
+    )
+
+    session.pop(
+        "section",
+        None
+    )
+
+    session.pop(
+        "role",
+        None
+    )
+
+    return redirect(
+        url_for(
+            "main.student_login"
+        )
+    )
+
+
+
+
+# =================================================
+# STUDENT DASHBOARD
+# =================================================
+
+@main.route(
+    "/student_dashboard"
+)
+def student_dashboard():
+
+    if session.get("role") != "student":
+
+        return redirect(
+            url_for(
+                "main.student_login"
+            )
+        )
+
+    return render_template(
+        "student_dashboard.html"
+    )
+
+# =================================================
+# STUDENT ROUTINE
+# =================================================
+
+@main.route("/student_routine")
+def student_routine():
+
+    if session.get("role") != "student":
+
+        return redirect(
+            url_for("main.student_login")
+        )
+
+    timetable = Timetable.query.filter_by(
+
+        year="MCA",
+
+        semester=session["semester"],
+
+        section=session["section"]
+
+    ).all()
+
+    formatted = []
+
+    for t in timetable:
+
+        formatted.append(
+
+            (
+                t.day,
+                t.period,
+                t.year,
+                t.semester,
+                t.section,
+                t.subject,
+                t.teacher,
+                t.class_type,
+                t.room
+            )
+        )
+
+    return render_template(
+
+        "timetable.html",
+
+        timetable=formatted,
+
+        title=f"MCA Sem-{session['semester']} Section-{session['section']}"
+
+    )

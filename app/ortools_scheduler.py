@@ -41,13 +41,16 @@ TIME_SLOTS = {
 # ROOMS
 # =================================================
 THEORY_ROOMS = [
-    "T1",
-    "T2",
-    "T3",
-    "T4",
-    "T5",
-    "T6",
-    "T7"
+    "G01",
+    "G02",
+    "G03",
+    "G04",
+    "G05",
+    "G06",
+    "G07",
+    "G08",
+    "G09",
+    "G10"
 ]
 
 LAB_ROOMS = [
@@ -376,9 +379,57 @@ def run_ortools():
                     == slots[(s.id, g, d, p)]
                 )
 
-    # =================================================
-    # ROOM CLASH
-    # =================================================
+
+# =================================================
+# THEORY CONSECUTIVE SAME ROOM
+# =================================================
+
+    for s in subjects:
+
+        if s.subject_type == "theory":
+
+            g = (
+            s.year,
+            s.semester,
+            s.section
+        )
+
+            for d in range(len(DAYS)):
+
+                for p in range(len(PERIODS) - 1):
+
+                    for r in THEORY_ROOMS:
+
+                        current_room = room_assign[
+                        (
+                            s.id,
+                            g,
+                            d,
+                            p,
+                            r
+                        )
+                    ]
+
+                        next_room = room_assign[
+                        (
+                            s.id,
+                            g,
+                            d,
+                            p + 1,
+                            r
+                        )
+                    ]
+
+                        model.Add(
+                        current_room == next_room
+                    ).OnlyEnforceIf([
+                        slots[(s.id, g, d, p)],
+                        slots[(s.id, g, d, p + 1)]
+                    ])
+
+# =================================================
+# ROOM CLASH
+# =================================================
     for d in range(len(DAYS)):
 
         for p in range(len(PERIODS)):
@@ -387,60 +438,89 @@ def run_ortools():
 
                 model.Add(
 
-                    sum(
+                sum(
 
-                        room_assign[
+                    room_assign[
+                        (
+                            s.id,
                             (
-                                s.id,
-                                (
-                                    s.year,
-                                    s.semester,
-                                    s.section
-                                ),
-                                d,
-                                p,
-                                r
-                            )
-                        ]
+                                s.year,
+                                s.semester,
+                                s.section
+                            ),
+                            d,
+                            p,
+                            r
+                        )
+                    ]
 
                         for s in subjects
 
                         if s.subject_type == "theory"
 
-                    )
+                )
 
                     <= 1
                 )
 
-            for r in LAB_ROOMS:
 
-                model.Add(
 
-                    sum(
+# =================================================
+# LAB SAME ROOM CONSTRAINT
+# =================================================
+    for s in subjects:
+
+        if s.subject_type == "lab":
+
+            g = (
+            s.year,
+            s.semester,
+            s.section
+        )
+
+            for d in range(len(DAYS)):
+
+                room_used = []
+
+                for r in LAB_ROOMS:
+
+                    room_var = model.NewBoolVar(
+                    f"lab_room_{s.id}_{d}_{r}"
+                )
+
+                    room_slots = []
+
+                    for p in range(len(PERIODS)):
+
+                        room_slots.append(
 
                         room_assign[
                             (
                                 s.id,
-                                (
-                                    s.year,
-                                    s.semester,
-                                    s.section
-                                ),
+                                g,
                                 d,
                                 p,
                                 r
                             )
                         ]
 
-                        for s in subjects
-
-                        if s.subject_type == "lab"
-
                     )
 
-                    <= 1
-                )
+                    model.Add(
+                        sum(room_slots) <= 3 * room_var
+                    )
 
+                    model.Add(
+                        sum(room_slots) >= room_var
+                    )
+
+                    room_used.append(
+                        room_var
+                    )
+
+                model.Add(
+                    sum(room_used) <= 1
+                )
     # =================================================
     # MAX 7 CLASSES PER DAY
     # =================================================

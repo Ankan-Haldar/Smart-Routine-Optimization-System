@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>
+Student Dashboard
+</title>
+
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='student_dashboard.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard-card">
+
+    <h1>
+        Welcome Student 🎓
+    </h1>
+
+    <div class="student-info">
+
+        <p>
+            Semester : {{ semester }}
+        </p>
+
+        <p>
+            Section : {{ section }}
+        </p>
+
+    </div>
+
+    <div class="btn-group">
+
+        <a
+            href="/student_routine"
+            class="btn btn-routine"
+        >
+            View Routine
+        </a>
+
+        <a
+            href="/student_logout"
+            class="btn btn-logout"
+        >
+            Logout
+        </a>
+
+    </div>
+
+</div>
+</body>
+
+</html>

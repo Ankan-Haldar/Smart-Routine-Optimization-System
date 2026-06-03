@@ -273,3 +273,32 @@ class Timetable(db.Model):
 
     def __repr__(self):
         return f"<Timetable {self.day} Period-{self.period}>"
+    
+
+class Student(db.Model):
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    name = db.Column(
+        db.String(100)
+    )
+
+    email = db.Column(
+        db.String(120),
+        unique=True
+    )
+
+    semester = db.Column(
+        db.Integer
+    )
+
+    section = db.Column(
+        db.String(10)
+    )
+
+    password = db.Column(
+        db.String(100)
+    )
